@@ -14,9 +14,13 @@ $routes->get('/register', 'Auth::register');
 $routes->post('/auth/attemptRegister', 'Auth::attemptRegister');
 $routes->get('/logout', 'Auth::logout');
 
+// Get Admin Dashboard
 $routes->get('dashboard', 'Admin::dashboard');
 
-$routes->get('/landing-page', 'User::home');
-
+// Get Section Menu dan Homepages
 $routes->get('/user', 'User::index');
+$routes->get('/about', 'SectionHome::about');
+$routes->get('/shop', 'SectionHome::shop');
+$routes->get('/cart', 'SectionHome::cart');
+$routes->get('/testimoni', 'SectionHome::testimoni');
 

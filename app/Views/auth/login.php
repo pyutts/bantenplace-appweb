@@ -36,12 +36,6 @@
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
 
-                <?php if (session()->getFlashdata('error')) : ?>
-                    <div class="alert alert-danger">
-                        <?= session()->getFlashdata('error'); ?>
-                    </div>
-                <?php endif; ?>
-
                 <form action="/auth/attemptLogin" id="#formlogin" method="post">
                 <?= csrf_field(); ?>
   

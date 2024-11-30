@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
+    <title>Homepages - Bantenplace</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -24,6 +24,9 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= base_url('home'); ?>/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url('home'); ?>/js/main.js" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
 
     <!-- Template Stylesheet -->
     <link href="<?= base_url('home'); ?>/css/style.css" rel="stylesheet">

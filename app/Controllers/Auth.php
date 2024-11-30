@@ -21,15 +21,12 @@ class Auth extends BaseController
         $user = $userModel->where('email', $email)->first();
 
         if ($user) {
-            // Verifikasi password dengan bcrypt (password baru)
             if (password_verify($password, $user['password'])) {
                 $this->setUserSession($user);
                 return $this->redirectAfterLogin($user['level']);
             }
 
-            // Verifikasi password dengan MD5 (password lama)
             if ($user['password'] === md5($password)) {
-                // Update password ke bcrypt
                 $newHash = password_hash($password, PASSWORD_BCRYPT);
                 $userModel->update($user['id'], ['password' => $newHash]);
 
@@ -57,7 +54,7 @@ class Auth extends BaseController
         if ($level === 'Admin') {
             return redirect()->to('/dashboard');
         } elseif ($level === 'User') {
-            return redirect()->to('/landing-page');
+            return redirect()->to('/user');
         }
     }
 
