@@ -37,11 +37,23 @@
                             <div class="carousel-inner" role="listbox">
                                 <div class="carousel-item active rounded">
                                     <img src="<?= base_url('home');?>/img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Manusa Yajna</a>
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Dewa Yadnya</a>
                                 </div>
                                 <div class="carousel-item rounded">
                                     <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Pitra Yajna</a>
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Rsi Yadnya</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Pitra Yadnya</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Manusa Yadnya</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Bhuta Yadnya</a>
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">

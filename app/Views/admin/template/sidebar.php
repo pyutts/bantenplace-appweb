@@ -30,7 +30,7 @@
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-layer-group"></i>
-                        <p>Categori</p>
+                        <p>Category</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base">
@@ -42,6 +42,20 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#base">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Dropshipper</p>
+                        <span class="caret"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#base">
+                        <i class="fas fa-layer-group"></i>
+                        <p></p>
+                        <span class="caret"></span>
+                    </a>
                 </li>
             </ul>
         </div>
