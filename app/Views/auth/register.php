@@ -3,168 +3,138 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Daftar - Bantenplace</title>
-  <!-- Icon -->
-  <link rel="icon" href="<?= base_url('auth');?>/img/logogreen.png" type="image/x-icon" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
-  <!-- Google Fonts Roboto -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
-  <!-- Custom MDB CSS -->
-  <link rel="stylesheet" href="<?= base_url('auth');?>/css/bootstrap-login-form.min.css" />
-  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-  <style>
-    .form-control {
-      padding: 15px;
-      font-size: 16px;
-    }
-
-    .form-control::placeholder {
-      font-size: 14px;
-      color: #6c757d;
-    }
-
-    .btn {
-      padding: 12px;
-      font-size: 16px;
-    }
-
-    .card {
-      max-width: 700px; /* Perlebar card */
-      margin: auto; /* Pusatkan card */
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Bantenplace</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-  <body>
-      <section class="vh-100" style="background-color: #dcdcdc;">
-          <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-              <div class="col-md-10 col-lg-8">
-                <div class="card shadow" style="border-radius: 1rem;">
-                  <div class="card-body p-5">
-                    <h4 class="text-center fw-bold mb-4">Selamat Datang di Halaman Register <b>Bantenplace</b></h4>
-                    <?php if (session()->getFlashdata('error')) : ?>
-                      <div class="alert alert-danger">
-                          <?= session()->getFlashdata('error'); ?>
-                      </div>
-                     <?php endif; ?>
-                     <form action="/auth/attemptRegister" id="#formregister" method="post">
-                     <?= csrf_field(); ?>
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">Nama</label>
-                          <input type="text" class="form-control" name="Nama" id="Nama" placeholder="Masukkan Nama" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">Username</label>
-                          <input type="text" class="form-control" name="Username" id="Username" placeholder="Masukkan Username" />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">Email</label>
-                          <input type="email" class="form-control" name="Email" id="Email" placeholder="Masukkan Email" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">Alamat</label>
-                          <textarea class="form-control" rows="1" name="Alamat" id="Alamat" placeholder="Masukkan Alamat"></textarea>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">No Telepon</label>
-                          <input type="number" class="form-control" name="No" id="No" placeholder="Masukkan No Telepon" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label class="form-label">Kode Pos</label>
-                          <input type="number" class="form-control" name="Pos" id="Pos" placeholder="Masukkan Kode Pos" />
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-control" name="Password" id="Password" placeholder="Masukkan Password" />
-                      </div>
-                      <button class="btn btn-dark w-100 mb-3" type="submit" onclick="RegisterProses()">Register</button>
-                      <p class="text-center">Sudah memiliki akun? <a href="<?= base_url('/login'); ?>" class="text-decoration-none"><b>Login</b></a></p>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+<body class="flex items-center justify-center min-h-screen bg-gray-200 bg-[url('<?= base_url('auth'); ?>/img/polabatik.svg')] bg-repeat">
+  <section class="w-full max-w-4xl">
+    <div class="flex bg-white shadow-md rounded-lg overflow-hidden">
+      <!-- Gambar -->
+      <div class="hidden lg:flex lg:w-1/2 bg-gray-100 justify-center items-center">
+        <img src="<?= base_url('auth'); ?>/img/loginicon.png" alt="Register Icon"
+          class="w-3/4 object-contain" />
+      </div>
+      <!-- Form -->
+      <div class="w-full lg:w-1/2 p-8">
+        <h5 class="text-2xl font-bold text-gray-700 mb-6">Selamat Datang di Halaman Register 
+          <font color="green"><b>Bantenplace</font></b>
+        </h5>
+        <?php if (session()->getFlashdata('error')) : ?>
+        <div class="mb-4 bg-red-100 text-red-700 p-3 rounded-md">
+        <?= session()->getFlashdata('error'); ?>
+        </div>
+        <?php endif; ?>
+        <form action="/auth/attemptRegister" id="formregister" method="post">
+          <?= csrf_field(); ?>
+          <!-- Nama -->
+          <div class="mb-4">
+            <label for="Nama" class="block text-gray-700 font-medium mb-2">Nama</label>
+            <input type="text" id="Nama" name="Nama" placeholder="Masukkan Nama"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
-      </section>
-  </body>
-    <script>
+          <!-- Username -->
+          <div class="mb-4">
+            <label for="Username" class="block text-gray-700 font-medium mb-2">Username</label>
+            <input type="text" id="Username" name="Username" placeholder="Masukkan Username"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <!-- Email -->
+          <div class="mb-4">
+            <label for="Email" class="block text-gray-700 font-medium mb-2">Email</label>
+            <input type="email" id="Email" name="Email" placeholder="Masukkan Email"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <!-- Alamat -->
+          <div class="mb-4">
+            <label for="Alamat" class="block text-gray-700 font-medium mb-2">Alamat</label>
+            <textarea id="Alamat" name="Alamat" placeholder="Masukkan Alamat" rows="2"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+          </div>
+          <!-- No Telepon -->
+          <div class="mb-4">
+            <label for="No" class="block text-gray-700 font-medium mb-2">No Telepon</label>
+            <input type="number" id="No" name="No" placeholder="Masukkan No Telepon"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <!-- Kode Pos -->
+          <div class="mb-4">
+            <label for="Pos" class="block text-gray-700 font-medium mb-2">Kode Pos</label>
+            <input type="number" id="Pos" name="Pos" placeholder="Masukkan Kode Pos"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <!-- Password -->
+          <div class="mb-6">
+            <label for="Password" class="block text-gray-700 font-medium mb-2">Password</label>
+            <input type="password" id="Password" name="Password" placeholder="Masukkan Password"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <!-- Tombol Register -->
+          <button type="submit" onclick="RegisterProses()"
+            class="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition">
+            REGISTER
+          </button>
+          <!-- Link Login -->
+          <p class="text-gray-600 text-center mt-4">
+            Sudah memiliki akun?
+            <a href="<?= base_url('/login'); ?>" class="text-black-500 hover:underline font-medium">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
     function RegisterProses() {
-      var Nama = $('#Nama').val();
-      if (Nama.trim() === "") {
+      const Nama = document.getElementById('Nama').value.trim();
+      const Username = document.getElementById('Username').value.trim();
+      const Email = document.getElementById('Email').value.trim();
+      const Alamat = document.getElementById('Alamat').value.trim();
+      const No = document.getElementById('No').value.trim();
+      const Pos = document.getElementById('Pos').value.trim();
+      const Password = document.getElementById('Password').value.trim();
+
+      if (!Nama) {
         alert("Nama masih kosong");
-        $('#Nama').focus();
+        document.getElementById('Nama').focus();
         return false;
       }
-
-      var Username = $('#Username').val();
-      if (Username.trim() === "") {
+      if (!Username) {
         alert("Username masih kosong");
-        $('#Username').focus();
+        document.getElementById('Username').focus();
         return false;
       }
-
-      var Email = $('#Email').val();
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (Email.trim() === "") {
+      if (!Email) {
         alert("Email masih kosong");
-        $('#Email').focus();
-        return false;
-      } else if (!emailRegex.test(Email)) {
-        alert("Format email tidak valid");
-        $('#Email').focus();
+        document.getElementById('Email').focus();
         return false;
       }
-
-      var Alamat = $('#Alamat').val();
-      if (Alamat.trim() === "") {
+      if (!Alamat) {
         alert("Alamat masih kosong");
-        $('#Alamat').focus();
+        document.getElementById('Alamat').focus();
         return false;
       }
-
-      var No = $('#No').val();
-      var phoneRegex = /^[0-9]+$/; 
-      if (No.trim() === "") {
+      if (!No) {
         alert("No Telepon masih kosong");
-        $('#No').focus();
-        return false;
-      } else if (!phoneRegex.test(No)) {
-        alert("Nomor Telepon hanya boleh berisi angka");
-        $('#No').focus();
+        document.getElementById('No').focus();
         return false;
       }
-
-      var Pos = $('#Pos').val();
-      if (Pos.trim() === "") {
+      if (!Pos) {
         alert("Kode Pos masih kosong");
-        $('#Pos').focus();
+        document.getElementById('Pos').focus();
         return false;
       }
-
-      var Password = $('#Password').val();
-      if (Password.trim() === "") {
-        alert("Password masih kosong");
-        $('#Password').focus();
-        return false;
-      } else if (Password.length < 6) {
+      if (!Password || Password.length < 6) {
         alert("Password minimal 6 karakter");
-        $('#Password').focus();
+        document.getElementById('Password').focus();
         return false;
       }
 
-      $('#formregister').submit();
+      document.getElementById('formregister').submit();
     }
   </script>
-
+</body>
 
 </html>
- 

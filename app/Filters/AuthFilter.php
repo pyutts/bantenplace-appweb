@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class RoleFilter implements FilterInterface
+class AuthFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -23,22 +23,14 @@ class RoleFilter implements FilterInterface
      *
      * @return RequestInterface|ResponseInterface|string|void
      */
-
-     public function before(RequestInterface $request, $arguments = null)
-     {
-         $session = session();
- 
-         if (!$session->get('logged_in')) {
-             return redirect()->to('/login')->with('error', 'Harap login terlebih dahulu.');
-         }
- 
-         $userLevel = $session->get('level');
- 
-         if ($arguments && !in_array($userLevel, $arguments)) {
-             session()->destroy(); 
-             return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-         }
-     }
+    public function before(RequestInterface $request, $arguments = null)
+    {
+        // Jika sesi belum ada atau pengguna belum login
+        if (!session()->get('logged_in')) {
+            // Redirect ke halaman login
+            return redirect()->to('/login')->with('error', 'Untuk melanjutkan silahkan login terlebih dahulu.');
+        }
+    }
 
     /**
      * Allows After filters to inspect and modify the response

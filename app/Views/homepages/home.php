@@ -99,10 +99,11 @@
                     <div class="col-md-6 col-lg-3">
                         <div class="featurs-item text-center rounded bg-light p-4">
                             <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                                <i class="fas fa-exchange-alt fa-3x text-white"></i>
+                                <!-- <i class="fas fa-exchange-alt fa-3x text-white"></i> -->
+                                <i class="fa-3x text-white fa-duotone fa-solid fa-people-group"></i>
                             </div>
                             <div class="featurs-content text-center">
-                                <h5>30 Day Return</h5>
+                                <h5>Kerjasama ke Semua Pihak</h5>
                                 <p class="mb-0">30 day money guarantee</p>
                             </div>
                         </div>
