@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title><?= $title ?? 'Admin Panel'; ?></title>
+    <title>Dashboard - Bantenplace</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <link rel="icon" href="<?= base_url('admin');?>/img/icon.ico" type="image/x-icon"/>
 
@@ -17,6 +17,8 @@
             }
         });
     </script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="<?= base_url('admin');?>/css/bootstrap.min.css">
@@ -108,6 +110,23 @@
 						</li>
 					</ul>
 				</div>
-			</nav>
-            
+			</nav>   
     </div>
+
+	<script src="<?= base_url('admin');?>/js/core/jquery.3.2.1.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/core/popper.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/core/bootstrap.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/chart.js/chart.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/chart-circle/circles.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/datatables/datatables.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+	<script src="<?= base_url('admin');?>/js/plugin/sweetalert/sweetalert.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/atlantis.min.js"></script>
+	<script src="<?= base_url('admin');?>/js/setting-demo.js"></script>
+	<script src="<?= base_url('admin');?>/js/demo.js"></script>
+	</body>
+	</html>

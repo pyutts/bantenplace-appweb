@@ -6,24 +6,29 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
- $routes->get('/', 'Home::index'); // Halaman utama tanpa proteksi
+ $routes->get('/', 'Home::index'); 
 
- // Rute untuk otentikasi
+
  $routes->get('/login', 'Auth::login', ['filter' => 'noauth']);
  $routes->post('/auth/attemptLogin', 'Auth::attemptLogin', ['filter' => 'noauth']);
  $routes->get('/register', 'Auth::register', ['filter' => 'noauth']);
  $routes->post('/auth/attemptRegister', 'Auth::attemptRegister', ['filter' => 'noauth']);
  $routes->get('/logout', 'Auth::logout');
- 
- // Rute untuk Admin (hanya level Admin yang dapat mengakses)
- $routes->group('dashboard', ['filter' => 'role:Admin'], function ($routes) {
+
+ $routes->group('dashboard', ['filter' => 'role:Admin','auth'], function ($routes) {
      $routes->get('/', 'Admin::dashboard');
-     // Tambahkan rute lain yang khusus untuk admin
+     $routes->get('user', 'SectionDashboard::user');
+     $routes->get('orderdetail', 'SectionDashboard::orderdetail');
+     $routes->get('category', 'SectionDashboard::category');
+     $routes->get('managecontent', 'SectionDashboard::managecontent');
+     $routes->get('managecart', 'SectionDashboard::managecart');
+     $routes->get('manageproduct', 'SectionDashboard::manageproduct');
+     $routes->get('managetransaction', 'SectionDashboard::managetransaction');
+     $routes->get('reports', 'SectionDashboard::reports');
  });
  
- // Rute untuk User (hanya level User yang dapat mengakses)
  $routes->group('', ['filter' => 'role:User'], function ($routes) {
-     $routes->get('/user', 'User::index');
+     $routes->get('/home/user', 'Home::index');
      $routes->get('/about', 'SectionHome::about');
      $routes->get('/shop', 'SectionHome::shop');
      $routes->get('/cart', 'SectionHome::cart');

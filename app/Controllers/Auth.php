@@ -27,6 +27,14 @@ class Auth extends BaseController
             return $this->redirectAfterLogin($user['level']);
         }
 
+        $session = session();
+        $session->set([
+            'logged_in' => true,
+            'level' => $user, 
+            'last_activity' => time(),
+        ]);
+
+
         return redirect()->back()->with('error', 'Email atau password salah.');
     }
 
@@ -83,7 +91,7 @@ class Auth extends BaseController
             return redirect()->to('/dashboard');
         }
         if ($level === 'User') {
-            return redirect()->to('/user');
+            return redirect()->to('/home/user');
         }
         return redirect()->to('/login')->with('error', 'Level pengguna tidak dikenali.');
     }

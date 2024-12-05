@@ -25,12 +25,23 @@ class AuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        // Jika sesi belum ada atau pengguna belum login
-        if (!session()->get('logged_in')) {
-            // Redirect ke halaman login
+        $session = session();
+        
+        if (!$session->get('logged_in')) {
             return redirect()->to('/login')->with('error', 'Untuk melanjutkan silahkan login terlebih dahulu.');
         }
+
+        $lastActivity = $session->get('last_activity');
+        $currentTime = time();
+
+        if ($lastActivity && ($currentTime - $lastActivity > 300)) {
+            $session->destroy();
+            return redirect()->to('/login')->with('error', 'Sesi Anda telah berakhir karena tidak ada aktivitas.');
+        }
+
+        $session->set('last_activity', $currentTime);
     }
+
 
     /**
      * Allows After filters to inspect and modify the response

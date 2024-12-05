@@ -5,4 +5,4 @@
         <?= $this->renderSection('content'); ?>
     </div>
 </div>
-<?= $this->include('admin/template/footer'); ?>
+

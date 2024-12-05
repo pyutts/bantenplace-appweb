@@ -28,33 +28,57 @@
                     <h4 class="text-section">Menu</h4>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/user'); ?>">
+                        <i class="fas fa-user"></i>
+                        <p>User</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/manageproduct'); ?>">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                        <p>Produk</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/category'); ?>">
+                        <i class="fas fa-th-list"></i>
+                        <p>Kategori</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Category</p>
+                        <i class="fas fa-bars"></i>
+                        <p>Order</p>
                         <span class="caret"></span>
                     </a>
+                    <!-- submenu nya -->
                     <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="components/avatars.html">
-                                    <span class="sub-item">Avatars</span>
+                                <a href="<?= base_url('/dashboard/managetransaction'); ?>">
+                                    <span class="sub-item">Transaksi</span>
+                                </a>
+                                <a href="<?= base_url('/dashboard/managecart'); ?>">
+                                    <span class="sub-item">Keranjang</span>
+                                </a>
+                                <a href="<?= base_url('/dashboard/orderdetail'); ?>">
+                                    <span class="sub-item">Detail Order</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <!-- end submenunya -->
                 </li>
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#base">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Dropshipper</p>
-                        <span class="caret"></span>
+                    <a href="<?= base_url('/dashboard/reports'); ?>">
+                        <i class="far fa-chart-bar"></i>
+                        <p>Laporan</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#base">
-                        <i class="fas fa-layer-group"></i>
-                        <p></p>
-                        <span class="caret"></span>
+                    <a href="<?= base_url('/dashboard/managecontent'); ?>">
+                        <i class="fas fa-pen-square"></i>
+                        <p>Kelola Konten</p>
                     </a>
                 </li>
             </ul>
