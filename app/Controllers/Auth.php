@@ -14,29 +14,22 @@ class Auth extends BaseController
     public function attemptLogin()
     {
         $userModel = new UserModel();
-        $email = $this->request->getVar('email');
-        $password = $this->request->getVar('password');
-
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+    
         if (empty($email) || empty($password)) {
-            return redirect()->back()->with('error', 'Email dan password wajib diisi.');
+            return redirect()->back()->withInput()->with('error', 'Email dan password wajib diisi.');
         }
-
+    
         $user = $userModel->where('email', $email)->first();
         if ($user && password_verify($password, $user['password'])) {
             $this->setUserSession($user);
-            return $this->redirectAfterLogin($user['level']);
+            return $this->redirectAfterLogin($user['level'])->with('success', 'Selamat datang, ' . $user['nama'] . '!');
         }
-
-        $session = session();
-        $session->set([
-            'logged_in' => true,
-            'level' => $user, 
-            'last_activity' => time(),
-        ]);
-
-
-        return redirect()->back()->with('error', 'Email atau password salah.');
+    
+        return redirect()->back()->withInput()->with('error', 'Email atau password salah.');
     }
+    
 
     public function logout()
     {
@@ -52,6 +45,7 @@ class Auth extends BaseController
     public function attemptRegister()
     {
         $validation = \Config\Services::validation();
+
         $validation->setRules([
             'Nama'     => 'required',
             'Username' => 'required|is_unique[users.username]',
@@ -69,6 +63,7 @@ class Auth extends BaseController
             'username' => $this->request->getPost('Username'),
             'email'    => $this->request->getPost('Email'),
             'password' => password_hash($this->request->getPost('Password'), PASSWORD_BCRYPT),
+            'level'    => 'User', 
         ]);
 
         return redirect()->to('/login')->with('success', 'Registrasi berhasil. Silakan login.');
@@ -87,12 +82,13 @@ class Auth extends BaseController
 
     private function redirectAfterLogin($level)
     {
-        if ($level === 'Admin') {
-            return redirect()->to('/dashboard');
+        switch ($level) {
+            case 'Admin':
+                return redirect()->to('/dashboard');
+            case 'User':
+                return redirect()->to('/home/user');
+            default:
+                return redirect()->to('/login')->with('error', 'Level pengguna tidak dikenali.');
         }
-        if ($level === 'User') {
-            return redirect()->to('/home/user');
-        }
-        return redirect()->to('/login')->with('error', 'Level pengguna tidak dikenali.');
     }
 }

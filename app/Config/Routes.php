@@ -28,11 +28,11 @@ use CodeIgniter\Router\RouteCollection;
  });
  
  $routes->group('', ['filter' => 'role:User'], function ($routes) {
-     $routes->get('/home/user', 'Home::index');
-     $routes->get('/about', 'SectionHome::about');
-     $routes->get('/shop', 'SectionHome::shop');
-     $routes->get('/cart', 'SectionHome::cart');
-     $routes->get('/testimoni', 'SectionHome::testimoni');
+     $routes->get('/home/user', 'Homepages::index');
+     $routes->get('/about/user', 'SectionHome::about');
+     $routes->get('/shop/user', 'SectionHome::shop');
+     $routes->get('/cart/user', 'SectionHome::cart');
+     $routes->get('/testimoni/user', 'SectionHome::testimoni');
  });
  
  
