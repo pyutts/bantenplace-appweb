@@ -1,25 +1,6 @@
 <?= $this->extend('homepages/templates/main_home'); ?>
 
 <?= $this->section('content'); ?>
- <!-- Modal Search Start -->
- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Search End -->
-
         <!-- Hero Start -->
         <div class="container-fluid py-5 hero-header">
             <div class="container py-5">
@@ -92,7 +73,7 @@
                             </div>
                             <div class="featurs-content text-center">
                                 <h5>Pembayaran Aman</h5>
-                                <p class="mb-0">Melalui payment gateway yang aman dan terafiliasi BI</p>
+                                <p class="mb-0">Melalui payment gateway yang aman dan terafiliasi ke Bank</p>
                             </div>
                         </div>
                     </div>
@@ -103,7 +84,7 @@
                                 <i class="fas fa-3x text-white fa-duotone fa-solid fa-people-group"></i>
                             </div>
                             <div class="featurs-content text-center">
-                                <h5>Kerjasama antar pedagang</h5>
+                                <h5>Kerjasama </h5>
                                 <p class="mb-0">Memudahkan akses dalam mencari barang yang dibutuhkan</p>
                             </div>
                         </div>
