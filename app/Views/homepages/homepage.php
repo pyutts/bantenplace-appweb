@@ -17,23 +17,23 @@
                         <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                             <div class="carousel-inner" role="listbox">
                                 <div class="carousel-item active rounded">
-                                    <img src="<?= base_url('home');?>/img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                                    <img src="<?= base_url('home');?>/img/hero-img-1.jpg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="1">
                                     <a href="#" class="btn px-4 py-2 text-white rounded">Banten Dewa Yadnya</a>
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="2">
                                     <a href="#" class="btn px-4 py-2 text-white rounded">Banten Rsi Yadnya</a>
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Pitra Yadnya</a>
-                                </div>
-                                <div class="carousel-item rounded">
-                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <img src="<?= base_url('home');?>/img/hero-img-3.jpg" class="img-fluid w-100 h-100 rounded" alt="3">
                                     <a href="#" class="btn px-4 py-2 text-white rounded">Banten Manusa Yadnya</a>
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="<?= base_url('home');?>/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <img src="<?= base_url('home');?>/img/hero-img-4.jpg" class="img-fluid w-100 h-100 rounded" alt="4">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Banten Pitra Yadnya</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="<?= base_url('home');?>/img/hero-img-5.jpg" class="img-fluid w-100 h-100 rounded" alt="5">
                                     <a href="#" class="btn px-4 py-2 text-white rounded">Banten Bhuta Yadnya</a>
                                 </div>
                             </div>
