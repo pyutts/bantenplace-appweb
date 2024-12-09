@@ -5,7 +5,7 @@ use App\Controllers\BaseController;
 
     class SectionDashboard extends BaseController{
         public function user(){
-            return view('admin/user');
+            return view('admin/users/user_views');
         }
     
         public function orderdetail(){
@@ -25,7 +25,7 @@ use App\Controllers\BaseController;
         }
 
         public function manageproduct(){
-            return view('admin/produk');
+            return view('admin/products/products_views');
         }
 
         public function managetransaction(){

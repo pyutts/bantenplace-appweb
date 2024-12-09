@@ -17,7 +17,18 @@ use CodeIgniter\Router\RouteCollection;
 
  $routes->group('dashboard', ['filter' => 'role:Admin','auth'], function ($routes) {
      $routes->get('/', 'Admin::dashboard');
-     $routes->get('user', 'SectionDashboard::user');
+    // Daftar Users Dashboard
+     
+    $routes->get('users', 'UserDashboard::user'); // Menampilkan daftar pengguna
+    $routes->get('users/add', 'UserDashboard::createUser'); // Form tambah pengguna
+    $routes->post('users/addProses', 'UserDashboard::addProsesUser');
+
+    $routes->get('users/edit/(:num)', 'UserDashboard::edit/$1'); // Form edit pengguna dengan ID
+    $routes->post('users/update/(:num)', 'UserDashboard::update/$1'); // Memperbarui pengguna berdasarkan ID
+    $routes->get('users/delete/(:num)', 'UserDashboard::delete/$1'); // Menghapus pengguna berdasarkan ID
+
+     $routes->post('admin/users/addUsers', 'Admin/UsersDashboard::addUsers');
+     $routes->get('AddUsers', 'UserDashboard::addUsers');
      $routes->get('orderdetail', 'SectionDashboard::orderdetail');
      $routes->get('category', 'SectionDashboard::category');
      $routes->get('managecontent', 'SectionDashboard::managecontent');
@@ -34,5 +45,7 @@ use CodeIgniter\Router\RouteCollection;
      $routes->get('/cart/user', 'SectionHome::cart');
      $routes->get('/testimoni/user', 'SectionHome::testimoni');
  });
+
+ 
  
  

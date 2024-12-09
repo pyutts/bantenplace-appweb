@@ -62,6 +62,9 @@ class Auth extends BaseController
             'nama'     => $this->request->getPost('Nama'),
             'username' => $this->request->getPost('Username'),
             'email'    => $this->request->getPost('Email'),
+            'alamat'    => $this->request->getPost('Alamat'),
+            'no_telepon' => $this->request->getPost('No'),
+            'kode_pos'    => $this->request->getPost('Pos'),
             'password' => password_hash($this->request->getPost('Password'), PASSWORD_BCRYPT),
             'level'    => 'User', 
         ]);

@@ -28,7 +28,7 @@
                     <h4 class="text-section">Menu</h4>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('/dashboard/user'); ?>">
+                    <a href="<?= base_url('/dashboard/users'); ?>">
                         <i class="fas fa-user"></i>
                         <p>User</p>
                     </a>
