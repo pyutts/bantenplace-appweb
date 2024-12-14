@@ -40,12 +40,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('/dashboard/category'); ?>">
-                        <i class="fas fa-th-list"></i>
-                        <p>Kategori</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-bars"></i>
                         <p>Order</p>

@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\UsersModel;
 
 class Auth extends BaseController
 {
@@ -13,7 +13,7 @@ class Auth extends BaseController
 
     public function attemptLogin()
     {
-        $userModel = new UserModel();
+        $userModel = new UsersModel();
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
     
@@ -57,7 +57,7 @@ class Auth extends BaseController
             return redirect()->back()->withInput()->with('error', $validation->getErrors());
         }
 
-        $userModel = new UserModel();
+        $userModel = new UsersModel();
         $userModel->save([
             'nama'     => $this->request->getPost('Nama'),
             'username' => $this->request->getPost('Username'),
@@ -75,11 +75,12 @@ class Auth extends BaseController
     private function setUserSession($user)
     {
         session()->set([
-            'id'        => $user['id'],
-            'username'  => $user['username'],
-            'email'     => $user['email'],
-            'level'     => $user['level'],
-            'logged_in' => true,
+            'id'            => $user['id'],
+            'username'      => $user['username'],
+            'email'         => $user['email'],
+            'level'         => $user['level'],
+            'profil_gambar' => $user['profil_gambar'],
+            'logged_in'     => true,
         ]);
     }
 

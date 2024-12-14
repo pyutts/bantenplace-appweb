@@ -60,9 +60,14 @@
                                     </thead>
                                         <tbody>
                                         <?php if (!empty($users) && is_array($users)): ?>
-                                            <?php foreach ($users as $user): ?>
+                                            
+                                            <?php foreach ($users as $user): 
+                                            $num = 1;    
+                                            ?>
                                                 <tr>
-                                                    <td><img class="avatar-img rounded-circle" src="<?= base_url('uploads/profiles' . $user['profil_gambar']) ?>" alt="profilmu" width="50"></td>
+                                                <td>
+                                                    <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/profiles/' . $user['profil_gambar']) ?>" alt="icon">
+                                                </td>
                                                     <td><?= $user['nama'] ?></td>
                                                     <td><?= $user['email'] ?></td>
                                                     <td><?= $user['alamat'] ?></td>
@@ -74,9 +79,10 @@
                                                         <button type="button" class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal" data-target="#modalEdit" onclick="loadUser(<?= htmlspecialchars(json_encode($user)) ?>)">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                            <button type="button" class="btn btn-link btn-danger">
+                                                            <button type="button" class="btn btn-link btn-danger btn-delete" data-id="<?= $user['id'] ?>">
                                                                 <i class="fa fa-times"></i>
                                                             </button>
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -116,12 +122,193 @@
 </div>
 
 <script>
-    function loadUser(user) {
-    document.getElementById('id').value = user.id;
-    document.getElementById('edit_nama').value = user.nama;
-    document.getElementById('edit_email').value = user.email;
-    document.getElementById('edit_alamat').value = user.alamat;
-    $('#modalTambah').modal('show');
+
+function loadUser(user) {
+    document.getElementById('id').value = user.id; // Hidden ID
+    document.getElementById('edit_nama').value = user.nama; // Nama
+    document.getElementById('edit_email').value = user.email; // Email
+    document.getElementById('edit_alamat').value = user.alamat; // Alamat
+    $('#modalEdit').modal('show'); // Tampilkan modal edit
 }
+
+$('.btn-delete').on('click', function() {
+    var userId = $(this).data('id');
+    
+    Swal.fire({
+        title: 'Konfirmasi Hapus',
+        text: 'Apakah Anda yakin ingin menghapus pengguna ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('dashboard/user-dashboard/delete/') ?>' + userId, 
+                type: 'POST',
+                data: { id: userId }, 
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Deleted!', response.message, 'success');
+                    } else {
+                        Swal.fire('Error!', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Terjadi kesalahan saat menghapus pengguna.', 'error');
+                }
+            });
+        }
+    });
+});
+
+// ajax add formnya
+$(document).ready(function () {
+    $("#formTambah").submit(function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            url: "<?= base_url('dashboard/users/addProses') ?>", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                Swal.fire({
+                    title: "Memproses...",
+                    text: "Mohon tunggu sebentar",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (response) {
+                if (response.status === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil!",
+                        text: response.message,
+                    }).then(() => {
+                        location.reload(); 
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal!",
+                        text: response.message || "Harap periksa form!",
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Terjadi Kesalahan!",
+                    text: "Coba lagi nanti atau hubungi admin.",
+                });
+            },
+        });
+    });
+});
+
+// ajax update
+$(document).ready(function () {
+    $("#formEdit").submit(function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            url: "<?= base_url('dashboard/users/update') ?>", // Endpoint edit
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                Swal.fire({
+                    title: "Memproses...",
+                    text: "Mohon tunggu sebentar",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (response) {
+                if (response.status === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil!",
+                        text: response.message,
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal!",
+                        text: response.message || "Harap periksa form!",
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Terjadi Kesalahan!",
+                    text: "Coba lagi nanti atau hubungi admin.",
+                });
+            }
+        });
+    });
+});
+
+// ajax untuk delete
+$('.btn-delete').on('click', function() {
+    var userId = $(this).data('id');
+    var url = '<?= base_url('dashboard/users/delete/') ?>' + userId;
+    console.log("Request URL: ", url);
+
+    if (!userId) {
+        console.error("User ID tidak valid.");
+        return;
+    }
+
+    Swal.fire({
+        title: 'Konfirmasi Hapus',
+        text: 'Apakah Anda yakin ingin menghapus pengguna ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('dashboard/users/delete/') ?>' + userId, 
+                type: 'POST',
+                data: { id: userId },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Deleted!', response.message, 'success').then(() => {
+                            location.reload();                         });
+                    } else {
+                        Swal.fire('Error!', response.message, 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error: ", xhr.responseText);
+                    Swal.fire('Error!', 'Terjadi kesalahan saat menghapus pengguna.', 'error');
+                }
+            });
+        }
+    });
+});
+
 </script>
+
 <?= $this->endSection(); ?>

@@ -4,16 +4,9 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 
     class SectionDashboard extends BaseController{
-        public function user(){
-            return view('admin/users/user_views');
-        }
     
         public function orderdetail(){
             return view('admin/detailorder');
-        }
-    
-        public function category(){
-            return view('admin/kategori');
         }
     
         public function managecontent(){

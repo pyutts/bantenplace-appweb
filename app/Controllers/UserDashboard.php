@@ -3,123 +3,156 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-// use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UsersModel;
 
 class UserDashboard extends BaseController
 {
-    public function user(){
-        $userModel = new \App\Models\UserModel();
-        $data['users'] = $userModel->findAll();
+    protected $users;
+    public function __construct()
+    {
+        $this->users = new \App\Models\UsersModel();
+    }
+    public function index()
+    {
+        $users = $this->users->findAll();
+
+        $data = [
+            'users' => $users
+        ];
+
         return view('admin/users/user_views', $data);
     }
 
-    public function createUser()
-    {
-        return view('users/createUser');
-    }
-
-    // Untuk fungsi ajaxnya dari button tambah di section users
-    public function addUsers()
+    public function addProses()
     {
         return view('admin/users/addUsers');
-        if ($this->request->getMethod() === 'POST') {
-            $input = $this->request->getJSON();
-            if (isset($input->action) && $input->action === 'add_user') {
-                return $this->response->setJSON(['status' => 'success', 'message' => 'Data anda berhasil ditambahkan']);
-            } else {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Ada Data yang tidak valid']);
-            }
-        }
-        return $this->response->setJSON(['status' => 'error', 'message' => 'Method Request tidak kami kenali']);
     }
 
-    public function addProsesUser()
-    {
-        $validation = \Config\Services::validation();
 
-        $rules = [
-            'nama' => 'required',
-            'email' => 'required|valid_email',
-            'level' => 'required',
-            'no_telepon' => 'required|numeric',
-            'alamat' => 'required',
-            'profil_gambar' => 'uploaded[profil_gambar]|max_size[profil_gambar,2048]|is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpg,image/jpeg]',
-        ];
+    public function saveData()
+{
+    $validation = \Config\Services::validation();
+    $rules = [
+        'nama' => 'required',
+        'username' => 'required|is_unique[users.username]',
+        'email' => 'required|valid_email|is_unique[users.email]',
+        'password' => 'required|min_length[6]',
+        'profil_gambar' => [
+            'rules' => 'is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,2048]',
+            'errors' => [
+                'is_image' => 'File harus berupa gambar.',
+                'mime_in' => 'Format file harus PNG/JPEG.',
+                'max_size' => 'Ukuran gambar maksimal 2MB.'
+            ]
+        ]
+    ];
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        $userModel = new \App\Models\UserModel();
-        $file = $this->request->getFile('profil_gambar');
-
-        if ($file->isValid() && !$file->hasMoved()) {
-            $fileName = $file->getRandomName();
-            $file->move('uploads/profil', $fileName);
-        } else {
-            $fileName = null;
-        }
-
-        // Data yang akan disimpan
-        $data = [
-            'nama' => $this->request->getPost('nama'),
-            'email' => $this->request->getPost('email'),
-            'level' => $this->request->getPost('level'),
-            'no_telepon' => $this->request->getPost('no_telepon'),
-            'kode_pos' => $this->request->getPost('kode_pos'),
-            'alamat' => $this->request->getPost('alamat'),
-            'profil_gambar' => $fileName,
-        ];
-
-        // Debug data yang akan dikirim
-        dd($data);
-
-        // Insert data ke database
-        $userModel->insert($data);
-
-        return redirect()->to('dashboard/users')->with('success', 'User berhasil ditambahkan');
+    if (!$this->validate($rules)) {
+        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
     }
 
-    public function edit($id)
-    {
-        $userModel = new \App\Models\UserModel();
-        $data['user'] = $userModel->find($id);
-
-        return view('users/edit', $data);
+    // Upload gambar
+    $image = $this->request->getFile('profil_gambar');
+    $imageName = '';
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        $imageName = $image->getRandomName();
+        $image->move('uploads/profiles', $imageName);
     }
 
-    public function update($id)
-    {
-        $userModel = new \App\Models\UserModel();
-        $file = $this->request->getFile('profil_gambar');
-        $user = $userModel->find($id);
+    $data = [
+        'nama' => $this->request->getPost('nama'),
+        'username' => $this->request->getPost('username'),
+        'email' => $this->request->getPost('email'),
+        'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
+        'profil_gambar' => $imageName,
+        'level' => 'User'
+    ];
 
-        if ($file->isValid() && !$file->hasMoved()) {
-            $fileName = $file->getRandomName();
-            $file->move('uploads/', $fileName);
+    $this->users->insert($data);
+    return redirect()->to('users')->with('success', 'User berhasil ditambahkan.');
+}
 
-            if ($user['profil_gambar'] && file_exists('uploads/' . $user['profil_gambar'])) {
-                unlink('uploads/' . $user['profil_gambar']);
-            }
-        } else {
-            $fileName = $user['profil_gambar'];
+public function edit($id)
+{
+    $user = $this->users->find($id);
+    if (!$user) {
+        return redirect()->to('users')->with('error', 'User tidak ditemukan.');
+    }
+
+    return view('admin/users/editUsers', ['user' => $user]);
+}
+
+public function update()
+{
+    $id = $this->request->getPost('id');
+    $user = $this->users->find($id);
+
+    if (!$user) {
+        return redirect()->to('users')->with('error', 'User tidak ditemukan.');
+    }
+
+    $validation = \Config\Services::validation();
+    $rules = [
+        'nama' => 'required',
+        'username' => 'required',
+        'email' => 'required|valid_email',
+        'profil_gambar' => 'permit_empty|is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,2048]'
+    ];
+
+    if (!$this->validate($rules)) {
+        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    }
+
+    $image = $this->request->getFile('profil_gambar');
+    $imageName = $user['profil_gambar'];
+
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        if (file_exists('uploads/profiles/' . $user['profil_gambar'])) {
+            unlink('uploads/profiles/' . $user['profil_gambar']);
         }
-
-        $data = [
-            'username' => $this->request->getPost('username'),
-            'nama' => $this->request->getPost('nama'),
-            'email' => $this->request->getPost('email'),
-            'level' => $this->request->getPost('level'),
-            'no_telepon' => $this->request->getPost('no_telepon'),
-            'kode_pos' => $this->request->getPost('kode_pos'),
-            'alamat' => $this->request->getPost('alamat'),
-            'profil_gambar' => $fileName,
-        ];
-
-        $userModel->update($id, $data);
-
-        return redirect()->to('/users');
+        $imageName = $image->getRandomName();
+        $image->move('uploads/profiles', $imageName);
     }
+
+    $dataUpdate = [
+        'nama' => $this->request->getPost('nama'),
+        'username' => $this->request->getPost('username'),
+        'email' => $this->request->getPost('email'),
+        'profil_gambar' => $imageName,
+    ];
+
+    if (!empty($this->request->getPost('password'))) {
+        $dataUpdate['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+    }
+
+    $this->users->update($id, $dataUpdate);
+    return redirect()->to('users')->with('success', 'User berhasil diperbarui.');
+}
+
+public function delete($id = null)
+{
+    $user = $this->users->find($id);
+
+    if (!$user) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'User tidak ditemukan.'
+        ]);
+    }
+
+    if (!empty($user['profil_gambar']) && file_exists('uploads/profiles/' . $user['profil_gambar'])) {
+        unlink('uploads/profiles/' . $user['profil_gambar']);
+    }
+
+    $this->users->delete($id);
+
+    return $this->response->setJSON([
+        'status' => 'success',
+        'message' => 'User berhasil dihapus.'
+    ]);
+}
+
+
 
 
 }

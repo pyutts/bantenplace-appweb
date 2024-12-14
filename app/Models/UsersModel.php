@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class UsersModel extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
@@ -15,8 +15,4 @@ class UserModel extends Model
     ];
     protected $useTimestamps = true;
 
-    public function addUser($data)
-    {
-        return $this->insert($data);
-    }
 }

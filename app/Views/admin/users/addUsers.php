@@ -11,23 +11,23 @@
                 <div class="modal-body p-4">
                     <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text" class="form-control form-control-lg" id="nama" name="Nama" required>
+                        <input type="text" class="form-control form-control-lg" id="nama" name="nama" required>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control form-control-lg" id="username" name="Username" required>
+                        <input type="text" class="form-control form-control-lg" id="username" name="username" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="email" name="Email" required>
+                        <input type="email" class="form-control form-control-lg" id="email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="telepon">Nomor Telepon</label>
-                        <input type="text" class="form-control form-control-lg" id="telepon" name="Telepon">
+                        <input type="number" class="form-control form-control-lg" id="telepon" name="telepon">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control form-control-lg" id="password" name="Password" required>
+                        <input type="password" class="form-control form-control-lg" id="password" name="password" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
