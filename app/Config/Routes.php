@@ -25,7 +25,7 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('users/save', 'UserDashboard::saveData'); 
     $routes->get('users/edit/(:num)', 'UserDashboard::edit/$1'); 
     $routes->post('users/update', 'UserDashboard::update');
-    $routes->post('users/delete/(:num)', 'UserDashboard::delete/$1');
+    $routes->delete('users/delete/(:num)', 'UserDashboard::delete/$1');
  
     // Section Lain
      $routes->get('orderdetail', 'SectionDashboard::orderdetail');

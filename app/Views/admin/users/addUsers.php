@@ -1,7 +1,7 @@
 <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="modalTambahLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
-            <form id="formTambah" action="<?= base_url('dashboard/users/addProses') ?>" method="post" enctype="multipart/form-data">
+            <form id="formTambah" action="<?= base_url('dashboard/users/save') ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title fw-bold" id="modalTambahLabel">Tambah User</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -11,7 +11,7 @@
                 <div class="modal-body p-4">
                     <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text" class="form-control form-control-lg" id="nama" name="nama" required>
+                        <input type="text"  class="form-control form-control-lg" id="nama" name="nama" placeholder="Nama" required>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -23,7 +23,11 @@
                     </div>
                     <div class="form-group">
                         <label for="telepon">Nomor Telepon</label>
-                        <input type="number" class="form-control form-control-lg" id="telepon" name="telepon">
+                        <input type="number" class="form-control form-control-lg" id="no_telepon" name="no_telepon">
+                    </div>
+                    <div class="form-group">
+                        <label for="kodepos">Kode Pos</label>
+                        <input type="number" class="form-control form-control-lg" id="kode_pos" name="kode_pos">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -33,6 +37,8 @@
                         <label for="alamat">Alamat</label>
                         <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
                     </div>
+                      <!-- Level -->
+                   
                     <div class="form-group">
                         <label for="profil_gambar">Foto Profil</label>
                         <input type="file" class="form-control-file" id="profil_gambar" name="profil_gambar">
