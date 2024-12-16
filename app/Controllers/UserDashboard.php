@@ -54,7 +54,6 @@ class UserDashboard extends BaseController
             ]);
         }
 
-        // Upload Gambar dengan Format Tanggal dan Random Hash
         $image = $this->request->getFile('profil_gambar');
         $imageName = '';
 
@@ -138,6 +137,7 @@ class UserDashboard extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'User tidak ditemukan.']);
         }
 
+        
         if (!empty($user['profil_gambar']) && file_exists('uploads/profiles/' . $user['profil_gambar'])) {
             unlink('uploads/profiles/' . $user['profil_gambar']);
         }

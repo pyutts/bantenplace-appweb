@@ -62,7 +62,18 @@
 							<!-- Gambar Profil -->
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									<img src="<?= session()->get('profil_gambar'); ?>" alt="..." class="avatar-img rounded-circle">
+											<?php
+												$userImage = session()->get ('profil_gambar');
+
+												$filePath = FCPATH . $userImage;
+
+												if ($userImage && file_exists($filePath)) {
+													$imageSrc = base_url($userImage);
+												} else {
+													$imageSrc = base_url('/uploads/default/default_user.png');
+												}
+											?>					
+									<img src="<?= esc($imageSrc) ?>"class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<!-- Profil -->
@@ -70,7 +81,20 @@
 								<div class="dropdown-user-scroll scrollbar-outer">
 									<li>
 										<div class="user-box">
-											<div class="avatar-lg"><img src="<?= base_url('admin');?>/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+											<div class="avatar-lg">
+											<?php
+												$userImage = session()->get ('profil_gambar');
+
+												$filePath = FCPATH . $userImage;
+
+												if ($userImage && file_exists($filePath)) {
+													$imageSrc = base_url($userImage);
+												} else {
+													$imageSrc = base_url('/uploads/default/default_user.png');
+												}
+											?>
+												<img src="<?= esc($imageSrc) ?>" alt="image profile" class="avatar-img rounded">
+											</div>
 											<div class="u-text">
 												<h4><font size="2"><?= session()->get('username'); ?></font></h4>
 												<span class="text-muted"><font size="2"><b><?= session()->get('level'); ?></b></font></span>

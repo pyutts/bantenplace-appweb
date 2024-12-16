@@ -65,7 +65,7 @@ class Auth extends BaseController
             'alamat'    => $this->request->getPost('Alamat'),
             'no_telepon' => $this->request->getPost('No'),
             'kode_pos'    => $this->request->getPost('Pos'),
-            'password' => password_hash($this->request->getPost('Password'), PASSWORD_BCRYPT),
+            'password'  => password_hash($this->request->getPost('Password'), PASSWORD_BCRYPT),
             'level'    => 'User', 
         ]);
 
@@ -81,6 +81,7 @@ class Auth extends BaseController
             'level'         => $user['level'],
             'profil_gambar' => $user['profil_gambar'],
             'logged_in'     => true,
+            'logged_out'    => true,
         ]);
     }
 

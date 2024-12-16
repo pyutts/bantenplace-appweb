@@ -3,7 +3,18 @@
         <div class="sidebar-content">
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
-                    <img src="<?= base_url('admin');?>/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
+                <?php
+				    $userImage = session()->get ('profil_gambar');
+
+					$filePath = FCPATH . $userImage;
+
+					if ($userImage && file_exists($filePath)) {
+						$imageSrc = base_url($userImage);
+					} else {
+						$imageSrc = base_url('/uploads/default/default_user.png');
+					}
+					?>
+                    <img src="<?= esc($imageSrc) ?>" alt="..." class="avatar-img rounded-circle">
                 </div>
                 <div class="info">
                     <a aria-expanded="true">

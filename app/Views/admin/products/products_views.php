@@ -35,12 +35,12 @@
                                     <td>
                                         <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/profiles/' . $user['profil_gambar']) ?>" alt="icon">
                                     </td>
-                                    <td><?= esc($user['nama']) ?></td>
-                                    <td><?= esc($user['email']) ?></td>
-                                    <td><?= esc($user['alamat']) ?></td>
-                                    <td><?= esc($user['no_telepon']) ?></td>
-                                    <td><?= esc($user['kode_pos']) ?></td>
-                                    <td><?= esc($user['level']) ?></td>
+                                    <td><?= ($user['nama']) ?></td>
+                                    <td><?= ($user['email']) ?></td>
+                                    <td><?= ($user['alamat']) ?></td>
+                                    <td><?= ($user['no_telepon']) ?></td>
+                                    <td><?= ($user['kode_pos']) ?></td>
+                                    <td><?= ($user['level']) ?></td>
                                     <td>
                                         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-target="#modalEdit" onclick="formEdit(<?= htmlspecialchars(json_encode($user)) ?>)">
                                             <i class="fa fa-edit"></i>
