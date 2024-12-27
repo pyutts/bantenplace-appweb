@@ -50,13 +50,13 @@
                         <p>Produk</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-bars"></i>
                         <p>Order</p>
                         <span class="caret"></span>
                     </a>
-                    <!-- submenu nya -->
+                    
                     <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
                             <li>
@@ -72,9 +72,9 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- end submenunya -->
-                </li>
-                <li class="nav-item">
+                   
+                </li> -->
+                <!-- <li class="nav-item">
                     <a href="<?= base_url('/dashboard/reports'); ?>">
                         <i class="far fa-chart-bar"></i>
                         <p>Laporan</p>
@@ -85,7 +85,7 @@
                         <i class="fas fa-pen-square"></i>
                         <p>Kelola Konten</p>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

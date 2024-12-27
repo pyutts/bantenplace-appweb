@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
             <form id="formEdit" action="<?= base_url('dashboard/users/update') ?>" method="post" enctype="multipart/form-data">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title fw-bold" id="modalEditLabel">Edit User</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -11,25 +11,46 @@
                 <div class="modal-body p-4">
                     <input type="hidden" name="id">
                     <div class="form-group">
-                        <label for="edit_nama">Nama</label>
-                        <input type="text" class="form-control form-control-lg" id="edit_nama" name="nama" required>
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control form-control-lg" id="nama" name="nama" placeholder="Nama" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_username">Username</label>
-                        <input type="text" class="form-control form-control-lg" id="edit_username" name="username" required>
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control form-control-lg" id="username" name="username" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_email">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="edit_email" name="email" required>
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control form-control-lg" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_telepon">Telepon</label>
-                        <input type="number" class="form-control form-control-lg" id="edit_telepon" name="no_telepon">
+                        <label for="telepon">Nomor Telepon</label>
+                        <input type="number" class="form-control form-control-lg" id="no_telepon" name="no_telepon">
                     </div>
                     <div class="form-group">
-                        <label for="edit_alamat">Alamat</label>
-                        <textarea class="form-control" id="edit_alamat" name="alamat" rows="3"></textarea>
+                        <label for="kodepos">Kode Pos</label>
+                        <input type="number" class="form-control form-control-lg" id="kode_pos" name="kode_pos">
                     </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <select class="form-control form-control-lg" id="level" name="level" required>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profil_gambar">Foto Profil</label>
+                        <input type="file" class="form-control-file" id="profil_gambar" name="profil_gambar">
+                        <img id="previewProfilGambar" src="" alt="Preview Gambar Profil" class="mt-2" width="100">
+                    </div>
+
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>

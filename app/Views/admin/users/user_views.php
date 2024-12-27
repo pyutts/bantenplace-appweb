@@ -64,76 +64,29 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#add-row').DataTable({
-            responsive: true,
-            paging: true,
-            lengthChange: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            autoWidth: false,
-            language: {
-                search: "Cari:",
-                lengthMenu: "Tampilkan _MENU_ entri",
-                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                paginate: {
-                    previous: "Sebelumnya",
-                    next: "Selanjutnya"
-                }
+$(document).ready(function () {
+    $('#add-row').DataTable({
+        responsive: true,
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ entri",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            paginate: {
+                previous: "Sebelumnya",
+                next: "Selanjutnya"
             }
-        });
-
-        function submitForm(formId, url) {
-            $(formId).submit(function (e) {
-                e.preventDefault();
-                let formData = new FormData(this);
-
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            Swal.fire("Berhasil!", response.message, "success").then(() => location.reload());
-                        } else {
-                            Swal.fire("Gagal!", JSON.stringify(response.message), "error");
-                        }
-                    },
-                    error: function () {
-                        Swal.fire("Error!", "Terjadi kesalahan. Coba lagi nanti.", "error");
-                    },
-                });
-            });
         }
-
-        // memanggil fungsi form dari tambah
-        submitForm("#formTambah", "<?= base_url('dashboard/users/save') ?>");
-
-        window.formEdit = function(user) {
-        const modal = $('#modalEdit');
-
-        if (modal.length) {
-            modal.find('input[name="id"]').val(user.id);
-            modal.find('input[name="nama"]').val(user.nama);
-            modal.find('input[name="username"]').val(user.username);
-            modal.find('input[name="email"]').val(user.email);
-            modal.find('input[name="telepon"]').val(user.no_telepon);
-            modal.find('textarea[name="alamat"]').val(user.alamat);
-
-            // Tampilkan modal
-            modal.modal('show');
-        } else {
-            console.error("Modal edit tidak ditemukan!");
-        }
-    };
+    });
 
     function submitForm(formId, url) {
         $(formId).submit(function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
             let formData = new FormData(this);
 
             $.ajax({
@@ -151,7 +104,8 @@
                             icon: "success",
                             confirmButtonText: "OK",
                         }).then(() => {
-                            $('#modalEdit').modal('hide'); 
+                            $('#modalEdit').modal('hide');
+                            location.reload(); // Optional, bisa hapus jika tidak perlu refresh
                         });
                     } else {
                         Swal.fire({
@@ -173,38 +127,61 @@
             });
         });
     }
-     // memanggil fungsi form dari tambah
+
+    // Form edit
     submitForm("#formEdit", "<?= base_url('dashboard/users/update') ?>");
-        $(".btn-delete").on("click", function () {
-            const userId = $(this).data("id");
-            Swal.fire({
-                title: "Konfirmasi Hapus",
-                text: "Apakah Anda yakin ingin menghapus pengguna ini?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, Hapus!",
-                cancelButtonText: "Batal",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "<?= base_url('dashboard/users/delete/') ?>" + userId,
-                        type: "DELETE",
-                        dataType: "json",
-                        success: function (response) {
-                            if (response.status === "success") {
-                                Swal.fire("Deleted!", response.message, "success").then(() => location.reload());
-                            } else {
-                                Swal.fire("Error!", response.message, "error");
-                            }
-                        },
-                        error: function () {
-                            Swal.fire("Error!", "Terjadi kesalahan. Coba lagi nanti.", "error");
-                        },
-                    });
-                }
-            });
+
+    // Fungsi untuk menampilkan modal edit dan mengisi input dengan data sebelumnya
+    window.formEdit = function(user) {
+        const modal = $('#modalEdit');
+        if (modal.length) {
+            modal.find('input[name="id"]').val(user.id);
+            modal.find('input[name="nama"]').val(user.nama);
+            modal.find('input[name="username"]').val(user.username);
+            modal.find('input[name="email"]').val(user.email);
+            modal.find('input[name="no_telepon"]').val(user.no_telepon);
+            modal.find('input[name="kode_pos"]').val(user.kode_pos);
+            modal.find('textarea[name="alamat"]').val(user.alamat);
+            modal.modal('show');
+        } else {
+            console.error("Modal edit tidak ditemukan!");
+        }
+    };
+
+    $(".btn-delete").on("click", function () {
+        const userId = $(this).data("id");
+        Swal.fire({
+            title: "Konfirmasi Hapus",
+            text: "Apakah Anda yakin ingin menghapus pengguna ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= base_url('dashboard/users/delete/') ?>" + userId,
+                    type: "DELETE",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            Swal.fire("Deleted!", response.message, "success").then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error!", response.message, "error");
+                        }
+                    },
+                    error: function () {
+                        Swal.fire("Error!", "Terjadi kesalahan. Coba lagi nanti.", "error");
+                    },
+                });
+            }
         });
     });
+});
 </script>
+
+
 
 <?= $this->endSection(); ?>

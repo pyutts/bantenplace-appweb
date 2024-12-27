@@ -11,7 +11,7 @@
                 <div class="modal-body p-4">
                     <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text"  class="form-control form-control-lg" id="nama" name="nama" placeholder="Nama" required>
+                        <input type="text" class="form-control form-control-lg" id="nama" name="nama" placeholder="Nama" required>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -37,7 +37,14 @@
                         <label for="alamat">Alamat</label>
                         <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
                     </div>
-                      <!-- Level -->
+                    
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <select class="form-control form-control-lg" id="level" name="level" required>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
                    
                     <div class="form-group">
                         <label for="profil_gambar">Foto Profil</label>
