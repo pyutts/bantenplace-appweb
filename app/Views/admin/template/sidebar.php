@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('/dashboard/manageproduct'); ?>">
+                    <a href="<?= base_url('/dashboard/products'); ?>">
                     <i class="fa-solid fa-cart-shopping"></i>
                         <p>Produk</p>
                     </a>

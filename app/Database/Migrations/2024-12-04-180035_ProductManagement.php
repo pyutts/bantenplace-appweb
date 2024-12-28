@@ -10,7 +10,7 @@ class ProductManagement extends Migration
     {
         $this->forge->addField([
             'id'          => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
-            'user_id'     => ['type' => 'INT', 'unsigned' => true],
+            'user_id'     => ['type' => 'INT', 'unsigned' => true ],
             'name'        => ['type' => 'VARCHAR', 'constraint' => '150'],
             'description' => ['type' => 'TEXT', 'null' => true],
             'price'       => ['type' => 'DECIMAL', 'constraint' => '10,2'],

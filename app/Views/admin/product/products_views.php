@@ -1,15 +1,15 @@
 <?= $this->extend('admin/template/main_template'); ?>
 <?= $this->section('content'); ?>
 
-<?= $this->include('admin/users/addUsers'); ?>
-<?= $this->include('admin/users/editUsers'); ?>
+<?= $this->include('admin/product/addProducts'); ?>
+<?= $this->include('admin/product/editProducts'); ?>
 
 <div class="col-md-12 py-5">
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <h4 class="card-title">Daftar Users</h4>
             <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus"></i> Tambah Users
+                <i class="fa fa-plus"></i> Tambah Product
             </button>
         </div>
         <div class="card-body">
@@ -18,34 +18,30 @@
                 <table id="add-row" class="table table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Profil Gambar</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Alamat</th>
-                            <th>No Telepon</th>
-                            <th>Kode Pos</th>
-                            <th>Rules</th>
+                            <th>Gambar Products</th>
+                            <th>Nama Products</th>
+                            <th>Harga</th>
+                            <th>Deskripsi</th>
+                            <th>Stock</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($users) && is_array($users)): ?>
-                            <?php foreach ($users as $user): ?>
+                        <?php if (!empty($products) && is_array($products)): ?>
+                            <?php foreach ($products as $product): ?>
                                 <tr>
                                     <td>
-                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/profiles/' . $user['profil_gambar']) ?>" alt="icon">
+                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/products/' . $product['gambar_products']) ?>" alt="icon">
                                     </td>
-                                    <td><?= esc($user['nama']) ?></td>
-                                    <td><?= esc($user['email']) ?></td>
-                                    <td><?= esc($user['alamat']) ?></td>
-                                    <td><?= esc($user['no_telepon']) ?></td>
-                                    <td><?= esc($user['kode_pos']) ?></td>
-                                    <td><?= esc($user['level']) ?></td>
+                                    <td><?= esc($product['name_products']) ?></td>
+                                    <td><?= esc($product['price']) ?></td>
+                                    <td><?= esc($product['description']) ?></td>
+                                    <td><?= esc($product['stock']) ?></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-target="#modalEdit" onclick="formEdit(<?= htmlspecialchars(json_encode($user)) ?>)">
+                                        <button class="btn  btn-primary btn-sm" data-bs-toggle="modal" data-target="#modalEdit" onclick="formEdit(<?= htmlspecialchars(json_encode($product)) ?>)">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger btn-sm btn-delete" data-id="<?= $user['id'] ?>">
+                                        <button class="btn btn-danger btn-sm btn-delete" data-id="<?= $product['id'] ?>">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>

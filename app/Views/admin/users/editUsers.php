@@ -48,7 +48,6 @@
                     <div class="form-group">
                         <label for="profil_gambar">Foto Profil</label>
                         <input type="file" class="form-control-file" id="profil_gambar" name="profil_gambar">
-                        <img id="previewProfilGambar" src="" alt="Preview Gambar Profil" class="mt-2" width="100">
                     </div>
 
                 </div>
