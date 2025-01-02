@@ -4,11 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ProductsModel extends Model
+class LaporanModel extends Model
 {
-    protected $table = 'products';
+    protected $table = 'laporan';
     protected $primaryKey = ['id'];
-    protected $allowedFields = ['name', 'gambar_produk', 'description', 'price', 'stock', 'category_id', 'kode_produk', 'created_at', 'updated_at'];
+    protected $allowedFields = ['tilte', 'description', 'start-date', 'end-date', 'stock', 'total-orders', 'total-income', 'created_at', 'updated_at'];
 
     protected $beforeInsert = ['GenerateKodeUnik'];
 
@@ -18,4 +18,6 @@ class ProductsModel extends Model
         return $data;
     }
 }
+
+
 

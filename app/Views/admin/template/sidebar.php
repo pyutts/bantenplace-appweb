@@ -50,7 +50,7 @@
                         <p>Produk</p>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-bars"></i>
                         <p>Order</p>
@@ -71,10 +71,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
-                   
-                </li> -->
-                <!-- <li class="nav-item">
+                    </div>                   
+                </li> 
+                 <li class="nav-item">
                     <a href="<?= base_url('/dashboard/reports'); ?>">
                         <i class="far fa-chart-bar"></i>
                         <p>Laporan</p>
@@ -85,7 +84,7 @@
                         <i class="fas fa-pen-square"></i>
                         <p>Kelola Konten</p>
                     </a>
-                </li> -->
+                </li>
             </ul>
         </div>
     </div>

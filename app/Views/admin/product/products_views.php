@@ -3,23 +3,23 @@
 
 <?= $this->include('admin/product/addProducts'); ?>
 <?= $this->include('admin/product/editProducts'); ?>
-
 <div class="col-md-12 py-5">
     <div class="card">
         <div class="card-header d-flex align-items-center">
-            <h4 class="card-title">Daftar Users</h4>
+            <h4 class="card-title">Daftar Produk</h4>
             <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus"></i> Tambah Product
+                <i class="fa fa-plus"></i> Tambah Produk
             </button>
         </div>
         <div class="card-body">
             <!-- Tabel Data -->
             <div class="table-responsive">
-                <table id="add-row" class="table table-striped table-hover" style="width:100%">
+                <table id="productsAdd" class="table table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Gambar Products</th>
-                            <th>Nama Products</th>
+                            <th>Kode</th>
+                            <th>Gambar</th>
+                            <th>Nama Produk</th>
                             <th>Harga</th>
                             <th>Deskripsi</th>
                             <th>Stock</th>
@@ -30,6 +30,7 @@
                         <?php if (!empty($products) && is_array($products)): ?>
                             <?php foreach ($products as $product): ?>
                                 <tr>
+                                    <td><?= esc($product['kode_products']) ?></td>
                                     <td>
                                         <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/products/' . $product['gambar_products']) ?>" alt="icon">
                                     </td>
@@ -49,7 +50,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="text-center">Tidak ada data pengguna</td>
+                                <td colspan="8" class="text-center">Tidak ada data produk</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -61,7 +62,7 @@
 
 <script>
 $(document).ready(function () {
-    $('#add-row').DataTable({
+    $('#productsAdd').DataTable({
         responsive: true,
         paging: true,
         lengthChange: true,
@@ -80,80 +81,139 @@ $(document).ready(function () {
         }
     });
 
-    function submitForm(formId, url) {
-        $(formId).submit(function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
+    // Form handling
+    $("#formAdd").on('submit', function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this);
+        
+        // Debug
+        console.log("Submitting form...");
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
 
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: function (response) {
-                    switch (response.status) {
-                        case "success":
-                            Swal.fire({
-                                title: "Berhasil!",
-                                text: response.message,
-                                icon: "success",
-                                confirmButtonText: "OK",
-                            }).then(() => {
-                                $('#modalEdit').modal('hide');
-                                location.reload(); 
-                            });
-                            break;
-                        case "error":
-                            Swal.fire({
-                                title: "Gagal!",
-                                text: response.message || "Terjadi kesalahan.",
-                                icon: "error",
-                                confirmButtonText: "OK",
-                            });
-                            break;
-                        default:
-                            Swal.fire({
-                                title: "Peringatan!",
-                                text: "Status tidak dikenali.",
-                                icon: "warning",
-                                confirmButtonText: "OK",
-                            });
+        $.ajax({
+            url: "<?= base_url('dashboard/products/saveData') ?>",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function() {
+                // Tampilkan loading
+                Swal.fire({
+                    title: 'Loading...',
+                    text: 'Mohon tunggu sebentar',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
-                },
-                error: function () {
+                });
+            },
+            success: function(response) {
+                console.log("Response:", response);
+                Swal.close();
+                
+                if (response.status === 'success') {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Terjadi kesalahan saat memproses permintaan. Coba lagi nanti.",
-                        icon: "error",
-                        confirmButtonText: "OK",
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: response.message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
                     });
-                },
-            });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", {xhr, status, error});
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat memproses permintaan.',
+                });
+            }
         });
-    }
+    });
 
-    // Form edit
-    submitForm("#formEdit", "<?= base_url('dashboard/users/update') ?>");
+    // Form Edit handling
+    $("#formEdit").on('submit', function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: "<?= base_url('dashboard/products/update') ?>",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: response.message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat memproses permintaan.',
+                });
+            }
+        });
+    });
+
+    // Preview image
+    $('input[name="gambar_products"]').change(function() {
+        const file = this.files[0];
+        const reader = new FileReader();
+        const preview = $(this).closest('form').find('img');
+        
+        reader.onload = function(e) {
+            preview.attr('src', e.target.result).show();
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
 
     // Fungsi untuk menampilkan modal edit dan mengisi input dengan data sebelumnya
-    window.formEdit = function(user) {
+    window.formEdit = function(product) {
         const modal = $('#modalEdit');
         if (modal.length) {
-            modal.find('input[name="id"]').val(user.id);
-            modal.find('input[name="nama"]').val(user.nama);
-            modal.find('input[name="username"]').val(user.username);
-            modal.find('input[name="email"]').val(user.email);
-            modal.find('input[name="no_telepon"]').val(user.no_telepon);
-            modal.find('input[name="kode_pos"]').val(user.kode_pos);
-            modal.find('textarea[name="alamat"]').val(user.alamat);
-            modal.find('textarea[name="password"]').val(user.password);
-            modal.find('textarea[name="level"]').val(user.level);
+            modal.find('input[name="id"]').val(product.id);
+            modal.find('input[name="name_products"]').val(product.name_products);
+            modal.find('input[name="price"]').val(product.price);
+            modal.find('textarea[name="description"]').val(product.description);
+            modal.find('input[name="stock"]').val(product.stock);
+            modal.find('input[name="rating"]').val(product.rating);
             
-            // Preview gambar (jika ada field untuk gambar)
-            if (user.profil_gambar) {
-                modal.find('#previewProfilGambar').attr('src', '<?= base_url('uploads/profiles/') ?>' + user.profil_gambar);
+            if (product.gambar_products) {
+                modal.find('#previewProdukGambar').attr('src', '<?= base_url('uploads/products/') ?>' + product.gambar_products);
             }
             
           modal.modal('show');
@@ -163,10 +223,10 @@ $(document).ready(function () {
     };
 
     $(".btn-delete").on("click", function () {
-        const userId = $(this).data("id");
+        const productId = $(this).data("id");
         Swal.fire({
             title: "Konfirmasi Hapus",
-            text: "Apakah Anda yakin ingin menghapus pengguna ini?",
+            text: "Apakah Anda yakin ingin menghapus produk ini?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Ya, Hapus!",
@@ -174,7 +234,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "<?= base_url('dashboard/users/delete/') ?>" + userId,
+                    url: "<?= base_url('dashboard/products/delete/') ?>" + productId,
                     type: "DELETE",
                     dataType: "json",
                     success: function (response) {
@@ -195,6 +255,7 @@ $(document).ready(function () {
     });
 });
 </script>
+
 
 
 <?= $this->endSection(); ?>

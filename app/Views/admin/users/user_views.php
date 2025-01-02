@@ -37,7 +37,7 @@
                                     </td>
                                     <td><?= esc($user['nama']) ?></td>
                                     <td><?= esc($user['email']) ?></td>
-                                    <td><?= esc($user['alamat']) ?></td>
+                                    <td><?= esc($user['alamat']) ?></td> 
                                     <td><?= esc($user['no_telepon']) ?></td>
                                     <td><?= esc($user['kode_pos']) ?></td>
                                     <td><?= esc($user['level']) ?></td>

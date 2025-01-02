@@ -30,8 +30,8 @@ use CodeIgniter\Router\RouteCollection;
         
         // Daftar Products Dashboard
         $routes->get('products', 'ProductsDashboard::index'); 
-        $routes->get('products/addProses', 'ProductsDashboard::addProses'); 
-        $routes->post('products/save', 'ProductsDashboard::saveData'); 
+        $routes->get('products/add', 'ProductsDashboard::add'); 
+        $routes->post('products/saveData', 'ProductsDashboard::saveData'); 
         $routes->get('products/edit/(:num)', 'ProductsDashboard::edit/$1'); 
         $routes->post('products/update', 'ProductsDashboard::update');
         $routes->delete('products/delete/(:num)', 'ProductsDashboard::delete/$1');

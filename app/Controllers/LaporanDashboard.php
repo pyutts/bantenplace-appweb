@@ -3,15 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ProductsModel;
+use App\Models\LaporanModel;
 
-class ProductsDashboard extends BaseController
+class LaporanDashboard extends BaseController
 {
     protected $products;
 
     public function __construct()
     {
-        $this->products = new ProductsModel();
+        $this->products = new LaporanModel();
     }
 
     // Tampilkan semua produk
