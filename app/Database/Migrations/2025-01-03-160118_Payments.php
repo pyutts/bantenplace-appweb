@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class PaymentsManagement extends Migration
+class Payments extends Migration
 {
     public function up()
     {

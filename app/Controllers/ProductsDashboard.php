@@ -4,28 +4,31 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ProductsModel;
+use App\Models\CategoryModel;
 
 class ProductsDashboard extends BaseController
 {
-    protected $products;
+    protected $product;
+    protected $category;
 
     public function __construct()
     {
-        $this->products = new ProductsModel();
+        $this->product = new ProductsModel();
+        $this->category = new CategoryModel();
     }
 
     // Tampilkan semua produk
     public function index()
     {
-        $products = $this->products->findAll();
+        $products = $this->product->select('products.*, categories.name as category_name')
+                                  ->join('categories', 'categories.id = products.category_id', 'left')
+                                  ->findAll();
+        $categories = $this->category->findAll();
 
-        return view('admin/product/products_views', ['products' => $products]);
-    }
-
-    // Form tambah produk
-    public function add()
-    {
-        return view('admin/product/addProducts');
+        return view('admin/product/products_views', [
+            'products' => $products,
+            'categories' => $categories
+        ]);
     }
 
     // Proses simpan produk
@@ -33,10 +36,11 @@ class ProductsDashboard extends BaseController
     {
         $validation = \Config\Services::validation();
         $rules = [
-            'name'            => 'required',
+            'name_products'   => 'required',
             'description'     => 'required',
             'price'           => 'required|decimal',
             'stock'           => 'required|integer',
+            'category_id'     => 'required|integer',
             'gambar_products' => [
                 'rules'  => 'uploaded[gambar_products]|is_image[gambar_products]|mime_in[gambar_products,image/png,image/jpeg]|max_size[gambar_products,512]',
                 'errors' => [
@@ -61,19 +65,19 @@ class ProductsDashboard extends BaseController
         if ($image && $image->isValid() && !$image->hasMoved()) {
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('uploads/products', $imageName);
+            $image->move('public/uploads/products', $imageName);
         }
 
         $data = [
-            'kode_products'   => $this->request->getPost('GenerateKodeUnik'),
-            'name'            => $this->request->getPost('name'),
+            'name_products'   => $this->request->getPost('name_products'),
             'description'     => $this->request->getPost('description'),
             'price'           => $this->request->getPost('price'),
             'stock'           => $this->request->getPost('stock'),
-            'gambar_produk'   => $imageName,
+            'category_id'     => $this->request->getPost('category_id'),
+            'gambar_products' => $imageName,
         ];
 
-        $this->products->insert($data);
+        $this->product->insert($data);
 
         return $this->response->setJSON([
             'status'  => 'success',
@@ -84,20 +88,20 @@ class ProductsDashboard extends BaseController
     // Form edit produk
     public function edit($id)
     {
-        $product = $this->products->find($id);
+        $product = $this->product->find($id);
 
         if (!$product) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Produk tidak ditemukan']);
         }
 
-        return view('admin/product/editProducts', ['product' => $product]);
+        return $this->response->setJSON(['status' => 'success', 'data' => $product]);
     }
 
     // Proses update produk
     public function update()
     {
         $id = $this->request->getPost('id');
-        $product = $this->products->find($id);
+        $product = $this->product->find($id);
 
         if (!$product) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Produk tidak ditemukan']);
@@ -105,10 +109,11 @@ class ProductsDashboard extends BaseController
 
         $validation = \Config\Services::validation();
         $rules = [
-            'name'        => 'required',
-            'description' => 'required',
-            'price'       => 'required|decimal',
-            'stock'       => 'required|integer',
+            'name_products'   => 'required',
+            'description'     => 'required',
+            'price'           => 'required|decimal',
+            'stock'           => 'required|integer',
+            'category_id'     => 'required|integer',
             'gambar_products' => [
                 'rules'  => 'is_image[gambar_products]|mime_in[gambar_products,image/png,image/jpeg]|max_size[gambar_products,512]',
                 'errors' => [
@@ -127,29 +132,29 @@ class ProductsDashboard extends BaseController
         }
 
         $image = $this->request->getFile('gambar_products');
-        $imageName = $product['gambar_produk'];
+        $imageName = $product['gambar_products'];
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
             // Hapus gambar lama jika ada
-            if ($product['gambar_produk'] && file_exists('uploads/products/' . $product['gambar_produk'])) {
-                unlink('uploads/products/' . $product['gambar_produk']);
+            if ($product['gambar_products'] && file_exists('public/uploads/products/' . $product['gambar_products'])) {
+                unlink('public/uploads/products/' . $product['gambar_products']);
             }
 
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('uploads/products', $imageName);
+            $image->move('public/uploads/products', $imageName);
         }
 
         $data = [
-            'kode_products'   => $this->request->getPost('GenerateKodeUnik'),
-            'name'            => $this->request->getPost('name'),
+            'name_products'   => $this->request->getPost('name_products'),
             'description'     => $this->request->getPost('description'),
             'price'           => $this->request->getPost('price'),
             'stock'           => $this->request->getPost('stock'),
-            'gambar_produk'   => $imageName,
+            'category_id'     => $this->request->getPost('category_id'),
+            'gambar_products' => $imageName,
         ];
 
-        $this->products->update($id, $data);
+        $this->product->update($id, $data);
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'Produk berhasil diperbarui.']);
     }
@@ -157,17 +162,17 @@ class ProductsDashboard extends BaseController
     // Hapus produk
     public function delete($id)
     {
-        $product = $this->products->find($id);
+        $product = $this->product->find($id);
 
         if (!$product) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Produk tidak ditemukan.']);
         }
 
-        if (!empty($product['gambar_produk']) && file_exists('uploads/products/' . $product['gambar_produk'])) {
-            unlink('uploads/products/' . $product['gambar_produk']);
+        if (!empty($product['gambar_products']) && file_exists('public/uploads/products/' . $product['gambar_products'])) {
+            unlink('public/uploads/products/' . $product['gambar_products']);
         }
 
-        $this->products->delete($id);
+        $this->product->delete($id);
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'Produk berhasil dihapus.']);
     }

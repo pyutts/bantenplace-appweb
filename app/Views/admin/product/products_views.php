@@ -1,8 +1,8 @@
 <?= $this->extend('admin/template/main_template'); ?>
 <?= $this->section('content'); ?>
 
-<?= $this->include('admin/product/addProducts'); ?>
-<?= $this->include('admin/product/editProducts'); ?>
+<?= $this->include('admin/product/addProducts', ['categories' => $categories]); ?>
+<?= $this->include('admin/product/editProducts', ['categories' => $categories]); ?>
 <div class="col-md-12 py-5">
     <div class="card">
         <div class="card-header d-flex align-items-center">
@@ -14,16 +14,17 @@
         <div class="card-body">
             <!-- Tabel Data -->
             <div class="table-responsive">
-                <table id="productsAdd" class="table table-striped table-hover" style="width:100%">
+                <table id="productsTable" class="table table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Kode</th>
+                            <th>Kode Produk</th>
                             <th>Gambar</th>
                             <th>Nama Produk</th>
                             <th>Harga</th>
                             <th>Deskripsi</th>
                             <th>Stock</th>
-                            <th>Action</th>
+                            <th>Kategori</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,19 +33,16 @@
                                 <tr>
                                     <td><?= esc($product['kode_products']) ?></td>
                                     <td>
-                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/products/' . $product['gambar_products']) ?>" alt="icon">
+                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('public/uploads/products/' . $product['gambar_products']) ?>" alt="icon">
                                     </td>
                                     <td><?= esc($product['name_products']) ?></td>
-                                    <td><?= esc($product['price']) ?></td>
+                                    <td>Rp. <?= esc(number_format($product['price'], 0, ',', '.')) ?></td>
                                     <td><?= esc($product['description']) ?></td>
                                     <td><?= esc($product['stock']) ?></td>
+                                    <td><?= esc($product['category_name']) ?></td>
                                     <td>
-                                        <button class="btn  btn-primary btn-sm" data-bs-toggle="modal" data-target="#modalEdit" onclick="formEdit(<?= htmlspecialchars(json_encode($product)) ?>)">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm btn-delete" data-id="<?= $product['id'] ?>">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalEdit" onclick="editProduct(<?= $product['id'] ?>)">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(<?= $product['id'] ?>)">Delete</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -61,8 +59,8 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    $('#productsAdd').DataTable({
+$(document).ready(function() {
+    $('#productsTable').DataTable({
         responsive: true,
         paging: true,
         lengthChange: true,
@@ -81,181 +79,100 @@ $(document).ready(function () {
         }
     });
 
-    // Form handling
-    $("#formAdd").on('submit', function(e) {
+    // Handle form submission for adding product
+    $('#formAdd').on('submit', function(e) {
         e.preventDefault();
-        
-        let formData = new FormData(this);
-        
-        // Debug
-        console.log("Submitting form...");
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-
         $.ajax({
-            url: "<?= base_url('dashboard/products/saveData') ?>",
-            type: "POST",
-            data: formData,
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
             processData: false,
             contentType: false,
-            dataType: "json",
-            beforeSend: function() {
-                // Tampilkan loading
-                Swal.fire({
-                    title: 'Loading...',
-                    text: 'Mohon tunggu sebentar',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-            },
             success: function(response) {
-                console.log("Response:", response);
-                Swal.close();
-                
                 if (response.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
+                    Swal.fire('Success', response.message, 'success').then(() => {
+                        location.reload();
                     });
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message,
-                    });
+                    Swal.fire('Error', response.message, 'error');
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error:", {xhr, status, error});
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat memproses permintaan.',
-                });
             }
         });
     });
 
-    // Form Edit handling
-    $("#formEdit").on('submit', function(e) {
+    // Handle form submission for editing product
+    $('#formEdit').on('submit', function(e) {
         e.preventDefault();
-        
-        let formData = new FormData(this);
-        
         $.ajax({
-            url: "<?= base_url('dashboard/products/update') ?>",
-            type: "POST",
-            data: formData,
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
             processData: false,
             contentType: false,
-            dataType: "json",
             success: function(response) {
                 if (response.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
+                    Swal.fire('Success', response.message, 'success').then(() => {
+                        location.reload();
                     });
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message,
-                    });
+                    Swal.fire('Error', response.message, 'error');
                 }
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat memproses permintaan.',
-                });
-            }
-        });
-    });
-
-    // Preview image
-    $('input[name="gambar_products"]').change(function() {
-        const file = this.files[0];
-        const reader = new FileReader();
-        const preview = $(this).closest('form').find('img');
-        
-        reader.onload = function(e) {
-            preview.attr('src', e.target.result).show();
-        }
-        
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Fungsi untuk menampilkan modal edit dan mengisi input dengan data sebelumnya
-    window.formEdit = function(product) {
-        const modal = $('#modalEdit');
-        if (modal.length) {
-            modal.find('input[name="id"]').val(product.id);
-            modal.find('input[name="name_products"]').val(product.name_products);
-            modal.find('input[name="price"]').val(product.price);
-            modal.find('textarea[name="description"]').val(product.description);
-            modal.find('input[name="stock"]').val(product.stock);
-            modal.find('input[name="rating"]').val(product.rating);
-            
-            if (product.gambar_products) {
-                modal.find('#previewProdukGambar').attr('src', '<?= base_url('uploads/products/') ?>' + product.gambar_products);
-            }
-            
-          modal.modal('show');
-        } else {
-            console.error("Modal edit tidak ditemukan!");
-        }
-    };
-
-    $(".btn-delete").on("click", function () {
-        const productId = $(this).data("id");
-        Swal.fire({
-            title: "Konfirmasi Hapus",
-            text: "Apakah Anda yakin ingin menghapus produk ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Batal",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "<?= base_url('dashboard/products/delete/') ?>" + productId,
-                    type: "DELETE",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            Swal.fire("Deleted!", response.message, "success").then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire("Error!", response.message, "error");
-                        }
-                    },
-                    error: function () {
-                        Swal.fire("Error!", "Terjadi kesalahan. Coba lagi nanti.", "error");
-                    },
-                });
             }
         });
     });
 });
+
+function editProduct(id) {
+    $.ajax({
+        url: '<?= base_url('dashboard/products/edit') ?>/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#product_id').val(response.data.id);
+                $('#kode_products').val(response.data.kode_products);
+                $('#name_products').val(response.data.name_products);
+                $('#price').val(response.data.price);
+                $('#description').val(response.data.description);
+                $('#stock').val(response.data.stock);
+                $('#category_id').val(response.data.category_id);
+                $('#previewGambar').attr('src', '<?= base_url('public/uploads/products') ?>/' + response.data.gambar_products);
+                $('#modalEdit').modal('show');
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        }
+    });
+}
+
+function deleteProduct(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('dashboard/products/delete') ?>/' + id,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Deleted!', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                }
+            });
+        }
+    });
+}
 </script>
-
-
 
 <?= $this->endSection(); ?>

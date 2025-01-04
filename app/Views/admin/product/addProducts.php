@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formAdd" method="POST" enctype="multipart/form-data">
+            <form id="formAdd" action="<?= base_url('dashboard/products/saveData') ?>" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Nama Produk</label>
@@ -26,9 +26,18 @@
                         <input type="number" class="form-control" name="stock" required>
                     </div>
                     <div class="form-group">
+                        <label>Kategori</label>
+                        <select class="form-control" name="category_id" required>
+                            <option value="">Pilih Kategori</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Gambar Produk</label>
-                        <input type="file" class="form-control" name="gambar_products" required>
-                        <img id="previewGambarAdd" src="#" alt="Preview" style="max-width: 200px; margin-top: 10px; display: none;">
+                        <input type="file" class="form-control" name="gambar_products" required onchange="previewImageAdd(event)">
+                        <img id="previewGambarAdd" src="#" alt="Preview" class="img-thumbnail" style="max-width: 200px; margin-top: 10px; display: none;">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -39,3 +48,15 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewImageAdd(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('previewGambarAdd');
+        output.src = reader.result;
+        output.style.display = 'block';
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>

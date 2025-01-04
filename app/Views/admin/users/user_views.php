@@ -3,57 +3,50 @@
 
 <?= $this->include('admin/users/addUsers'); ?>
 <?= $this->include('admin/users/editUsers'); ?>
-
 <div class="col-md-12 py-5">
     <div class="card">
         <div class="card-header d-flex align-items-center">
-            <h4 class="card-title">Daftar Users</h4>
+            <h4 class="card-title">Daftar User</h4>
             <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus"></i> Tambah Users
+                <i class="fa fa-plus"></i> Tambah User
             </button>
         </div>
         <div class="card-body">
             <!-- Tabel Data -->
             <div class="table-responsive">
-                <table id="add-row" class="table table-striped table-hover" style="width:100%">
+                <table id="usersTable" class="table table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Profil Gambar</th>
+                            <th>ID</th>
                             <th>Nama</th>
+                            <th>Username</th>
                             <th>Email</th>
-                            <th>Alamat</th>
-                            <th>No Telepon</th>
+                            <th>Nomor Telepon</th>
                             <th>Kode Pos</th>
-                            <th>Rules</th>
-                            <th>Action</th>
+                            <th>Level</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($users) && is_array($users)): ?>
                             <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td>
-                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/profiles/' . $user['profil_gambar']) ?>" alt="icon">
-                                    </td>
+                                    <td><?= esc($user['id']) ?></td>
                                     <td><?= esc($user['nama']) ?></td>
+                                    <td><?= esc($user['username']) ?></td>
                                     <td><?= esc($user['email']) ?></td>
-                                    <td><?= esc($user['alamat']) ?></td> 
                                     <td><?= esc($user['no_telepon']) ?></td>
                                     <td><?= esc($user['kode_pos']) ?></td>
                                     <td><?= esc($user['level']) ?></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-target="#modalEdit" onclick="formEdit(<?= htmlspecialchars(json_encode($user)) ?>)">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm btn-delete" data-id="<?= $user['id'] ?>">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalEdit" onclick="editUser(<?= $user['id'] ?>)">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteUser(<?= $user['id'] ?>)">Delete</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="text-center">Tidak ada data pengguna</td>
+                                <td colspan="8" class="text-center">Tidak ada data user</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -64,8 +57,8 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    $('#add-row').DataTable({
+$(document).ready(function() {
+    $('#usersTable').DataTable({
         responsive: true,
         paging: true,
         lengthChange: true,
@@ -84,121 +77,99 @@ $(document).ready(function () {
         }
     });
 
-    function submitForm(formId, url) {
-        $(formId).submit(function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: function (response) {
-                    switch (response.status) {
-                        case "success":
-                            Swal.fire({
-                                title: "Berhasil!",
-                                text: response.message,
-                                icon: "success",
-                                confirmButtonText: "OK",
-                            }).then(() => {
-                                $('#modalEdit').modal('hide');
-                                location.reload(); 
-                            });
-                            break;
-                        case "error":
-                            Swal.fire({
-                                title: "Gagal!",
-                                text: response.message || "Terjadi kesalahan.",
-                                icon: "error",
-                                confirmButtonText: "OK",
-                            });
-                            break;
-                        default:
-                            Swal.fire({
-                                title: "Peringatan!",
-                                text: "Status tidak dikenali.",
-                                icon: "warning",
-                                confirmButtonText: "OK",
-                            });
-                    }
-                },
-                error: function () {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Terjadi kesalahan saat memproses permintaan. Coba lagi nanti.",
-                        icon: "error",
-                        confirmButtonText: "OK",
+    // Handle form submission for adding user
+    $('#formAdd').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire('Success', response.message, 'success').then(() => {
+                        location.reload();
                     });
-                },
-            });
-        });
-    }
-
-    // Form edit
-    submitForm("#formEdit", "<?= base_url('dashboard/users/update') ?>");
-
-    // Fungsi untuk menampilkan modal edit dan mengisi input dengan data sebelumnya
-    window.formEdit = function(user) {
-        const modal = $('#modalEdit');
-        if (modal.length) {
-            modal.find('input[name="id"]').val(user.id);
-            modal.find('input[name="nama"]').val(user.nama);
-            modal.find('input[name="username"]').val(user.username);
-            modal.find('input[name="email"]').val(user.email);
-            modal.find('input[name="no_telepon"]').val(user.no_telepon);
-            modal.find('input[name="kode_pos"]').val(user.kode_pos);
-            modal.find('textarea[name="alamat"]').val(user.alamat);
-            modal.find('textarea[name="password"]').val(user.password);
-            modal.find('textarea[name="level"]').val(user.level);
-            
-            // Preview gambar (jika ada field untuk gambar)
-            if (user.profil_gambar) {
-                modal.find('#previewProfilGambar').attr('src', '<?= base_url('uploads/profiles/') ?>' + user.profil_gambar);
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
             }
-            
-          modal.modal('show');
-        } else {
-            console.error("Modal edit tidak ditemukan!");
-        }
-    };
+        });
+    });
 
-    $(".btn-delete").on("click", function () {
-        const userId = $(this).data("id");
-        Swal.fire({
+    // Handle form submission for editing user
+    $('#formEdit').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire('Success', response.message, 'success').then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            }
+        });
+    });
+});
+
+function editUser(id) {
+    $.ajax({
+        url: '<?= base_url('dashboard/users/edit') ?>/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#user_id').val(response.data.id);
+                $('#nama').val(response.data.nama);
+                $('#username').val(response.data.username);
+                $('#email').val(response.data.email);
+                $('#no_telepon').val(response.data.no_telepon);
+                $('#kode_pos').val(response.data.kode_pos);
+                $('#level').val(response.data.level);
+                $('#previewProfilGambarEdit').attr('src', '<?= base_url('public/uploads/users') ?>/' + response.data.profil_gambar);
+                $('#modalEdit').modal('show');
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        }
+    });
+}
+
+function deleteUser(id) {
+    Swal.fire({
             title: "Konfirmasi Hapus",
             text: "Apakah Anda yakin ingin menghapus pengguna ini?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Ya, Hapus!",
             cancelButtonText: "Batal",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "<?= base_url('dashboard/users/delete/') ?>" + userId,
-                    type: "DELETE",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            Swal.fire("Deleted!", response.message, "success").then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire("Error!", response.message, "error");
-                        }
-                    },
-                    error: function () {
-                        Swal.fire("Error!", "Terjadi kesalahan. Coba lagi nanti.", "error");
-                    },
-                });
-            }
-        });
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('dashboard/users/delete') ?>/' + id,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Deleted!', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                }
+            });
+        }
     });
-});
+}
 </script>
-
 
 <?= $this->endSection(); ?>

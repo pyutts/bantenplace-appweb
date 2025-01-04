@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class ReportManagement extends Migration
+class Reports extends Migration
 {
     public function up()
     {

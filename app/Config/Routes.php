@@ -35,6 +35,14 @@ use CodeIgniter\Router\RouteCollection;
         $routes->get('products/edit/(:num)', 'ProductsDashboard::edit/$1'); 
         $routes->post('products/update', 'ProductsDashboard::update');
         $routes->delete('products/delete/(:num)', 'ProductsDashboard::delete/$1');
+        
+        // Daftar Kategori Dashboard
+        $routes->get('categories', 'CategoryDashboard::index'); 
+        $routes->get('categories/add', 'CategoryDashboard::add'); 
+        $routes->post('categories/saveData', 'CategoryDashboard::saveData'); 
+        $routes->get('categories/edit/(:num)', 'CategoryDashboard::edit/$1'); 
+        $routes->post('categories/update', 'CategoryDashboard::update');
+        $routes->delete('categories/delete/(:num)', 'CategoryDashboard::delete/$1');
     
         // Section Lain
         $routes->get('orderdetail', 'SectionDashboard::orderdetail');

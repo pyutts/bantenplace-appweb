@@ -17,16 +17,10 @@ class UserDashboard extends BaseController
     public function index()
     {
         $users = $this->users->findAll();
-
         return view('admin/users/user_views', ['users' => $users]);
     }
 
     public function addProses()
-    {
-        return view('admin/users/addUsers');
-    }
-
-    public function saveData()
     {
         $validation = \Config\Services::validation();
         $rules = [
@@ -34,16 +28,14 @@ class UserDashboard extends BaseController
             'username'      => 'required|is_unique[users.username]',
             'email'         => 'required|valid_email|is_unique[users.email]',
             'password'      => 'required|min_length[6]',
-            'no_telepon'    => 'required|numeric',
-            'kode_pos'      => 'required|numeric',
-            'alamat'        => 'required',
             'level'         => 'required',
             'profil_gambar' => [
-                'rules'  => 'is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,2048]',
+                'rules'  => 'uploaded[profil_gambar]|is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,512]',
                 'errors' => [
+                    'uploaded' => 'Profil gambar wajib diunggah.',
                     'is_image' => 'File harus berupa gambar.',
-                    'mime_in'  => 'Format file harus PNG/JPEG.',
-                    'max_size' => 'Ukuran gambar maksimal 2MB.',
+                    'mime_in'  => 'Format file harus PNG atau JPEG.',
+                    'max_size' => 'Ukuran gambar maksimal 512Kb.',
                 ],
             ],
         ];
@@ -61,7 +53,7 @@ class UserDashboard extends BaseController
         if ($image && $image->isValid() && !$image->hasMoved()) {
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('uploads/profiles', $imageName);
+            $image->move('public/uploads/users', $imageName);
         }
 
         $data = [
@@ -69,9 +61,6 @@ class UserDashboard extends BaseController
             'username'      => $this->request->getPost('username'),
             'email'         => $this->request->getPost('email'),
             'password'      => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
-            'no_telepon'    => $this->request->getPost('no_telepon'),
-            'kode_pos'      => $this->request->getPost('kode_pos'),
-            'alamat'        => $this->request->getPost('alamat'),
             'level'         => $this->request->getPost('level'),
             'profil_gambar' => $imageName,
         ];
@@ -92,7 +81,7 @@ class UserDashboard extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'User tidak ditemukan']);
         }
 
-        return view('admin/users/editUsers', ['user' => $user]);
+        return $this->response->setJSON(['status' => 'success', 'data' => $user]);
     }
 
     public function update()
@@ -104,20 +93,18 @@ class UserDashboard extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'User tidak ditemukan']);
         }
 
+        $validation = \Config\Services::validation();
         $rules = [
-            'nama'       => 'required',
-            'username'   => 'required',
-            'email'      => 'required|valid_email',
-            'no_telepon' => 'required|numeric',
-            'alamat'     => 'required',
-            'level'      => 'required',
-            'kode_pos'   => 'required|numeric',
+            'nama'          => 'required',
+            'username'      => 'required|is_unique[users.username,id,{id}]',
+            'email'         => 'required|valid_email|is_unique[users.email,id,{id}]',
+            'level'         => 'required',
             'profil_gambar' => [
-                'rules'  => 'is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,2048]',
+                'rules'  => 'is_image[profil_gambar]|mime_in[profil_gambar,image/png,image/jpeg]|max_size[profil_gambar,512]',
                 'errors' => [
                     'is_image' => 'File harus berupa gambar.',
-                    'mime_in'  => 'Format file harus PNG/JPEG.',
-                    'max_size' => 'Ukuran gambar maksimal 2MB.',
+                    'mime_in'  => 'Format file harus PNG atau JPEG.',
+                    'max_size' => 'Ukuran gambar maksimal 512Kb.',
                 ],
             ],
         ];
@@ -125,42 +112,42 @@ class UserDashboard extends BaseController
         if (!$this->validate($rules)) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'errors' => $this->validator->getErrors(),
+                'errors' => $validation->getErrors(),
             ]);
         }
 
         $image = $this->request->getFile('profil_gambar');
-        $imageName = $user['profil_gambar']; 
+        $imageName = $user['profil_gambar'];
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
-            // Hapus gambar lama jika baru di-upload
-            if ($user['profil_gambar'] && file_exists('uploads/profiles/' . $user['profil_gambar'])) {
-                unlink('uploads/profiles/' . $user['profil_gambar']);
+            // Hapus gambar lama jika ada
+            if ($user['profil_gambar'] && file_exists('public/uploads/users/' . $user['profil_gambar'])) {
+                unlink('public/uploads/users/' . $user['profil_gambar']);
             }
 
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('uploads/profiles', $imageName);
+            $image->move('public/uploads/users', $imageName);
         }
 
         $data = [
-            'nama'       => $this->request->getPost('nama'),
-            'username'   => $this->request->getPost('username'),
-            'email'      => $this->request->getPost('email'),
-            'no_telepon' => $this->request->getPost('no_telepon'),
-            'alamat'     => $this->request->getPost('alamat'),
-            'level'      => $this->request->getPost('level'),
-            'kode_pos'   => $this->request->getPost('kode_pos'),
+            'nama'          => $this->request->getPost('nama'),
+            'username'      => $this->request->getPost('username'),
+            'email'         => $this->request->getPost('email'),
+            'level'         => $this->request->getPost('level'),
             'profil_gambar' => $imageName,
         ];
+
+        if ($this->request->getPost('password')) {
+            $data['password'] = password_hash($this->request->getPost('password'), PASSWORD_BCRYPT);
+        }
 
         $this->users->update($id, $data);
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'User berhasil diperbarui.']);
     }
 
-
-    public function delete($id = null)
+    public function delete($id)
     {
         $user = $this->users->find($id);
 
@@ -168,8 +155,8 @@ class UserDashboard extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'User tidak ditemukan.']);
         }
 
-        if (!empty($user['profil_gambar']) && file_exists('uploads/profiles/' . $user['profil_gambar'])) {
-            unlink('uploads/profiles/' . $user['profil_gambar']);
+        if (!empty($user['profil_gambar']) && file_exists('public/uploads/users/' . $user['profil_gambar'])) {
+            unlink('public/uploads/users/' . $user['profil_gambar']);
         }
 
         $this->users->delete($id);

@@ -42,6 +42,7 @@ class Auth extends BaseController
         return view('auth/register');
     }
 
+    
     public function attemptRegister()
     {
         $validation = \Config\Services::validation();
@@ -51,11 +52,16 @@ class Auth extends BaseController
             'Username' => 'required|is_unique[users.username]',
             'Email'    => 'required|valid_email|is_unique[users.email]',
             'Password' => 'required|min_length[6]',
+            'ProfilGambar' => 'uploaded[ProfilGambar]|is_image[ProfilGambar]|mime_in[ProfilGambar,image/jpg,image/jpeg,image/png]|max_size[ProfilGambar,2048]',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
             return redirect()->back()->withInput()->with('error', $validation->getErrors());
         }
+
+        $profilGambar = $this->request->getFile('ProfilGambar');
+        $profilGambarName = $profilGambar->getRandomName();
+        $profilGambar->move('public/uploads', $profilGambarName);
 
         $userModel = new UsersModel();
         $userModel->save([
@@ -66,6 +72,7 @@ class Auth extends BaseController
             'no_telepon' => $this->request->getPost('No'),
             'kode_pos'   => $this->request->getPost('Pos'),
             'password'  => password_hash($this->request->getPost('Password'), PASSWORD_BCRYPT),
+            'profil_gambar' => $profilGambarName,
             'level'    => 'User', 
         ]);
 

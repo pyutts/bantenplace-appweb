@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class OrdersManagement extends Migration
+class Orders extends Migration
 {
     public function up()
     {
@@ -15,7 +15,7 @@ class OrdersManagement extends Migration
             'product_id'   => ['type' => 'INT', 'unsigned' => true],
             'quantity'     => ['type' => 'INT', 'constraint' => 11],
             'total_price'  => ['type' => 'DECIMAL', 'constraint' => '10,2'],
-            'status'        => ['type' => 'ENUM', 'constraint' => ['Pending', 'Dibayar', 'Dikirim', 'Selesai'], 'default' => 'Pending'],
+            'status'       => ['type' => 'ENUM', 'constraint' => ['Pending', 'Dibayar', 'Dikirim', 'Selesai'], 'default' => 'Pending'],
             'payment_method' => ['type' => 'VARCHAR', 'constraint' => '50'],
             'created_at'   => ['type' => 'DATETIME', 'null' => true],
             'updated_at'   => ['type' => 'DATETIME', 'null' => true],

@@ -46,45 +46,41 @@
                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('/dashboard/products'); ?>">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                    <i class="fas fa-box"></i>
                         <p>Produk</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#base">
-                        <i class="fas fa-bars"></i>
-                        <p>Order</p>
-                        <span class="caret"></span>
+                    <a href="<?= base_url('/dashboard/categories'); ?>">
+                        <i class="fas fa-list"></i>
+                        <p>Kategori Produk</p>
                     </a>
-                    
-                    <div class="collapse" id="base">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="<?= base_url('/dashboard/managetransaction'); ?>">
-                                    <span class="sub-item">Transaksi</span>
-                                </a>
-                                <a href="<?= base_url('/dashboard/managecart'); ?>">
-                                    <span class="sub-item">Keranjang</span>
-                                </a>
-                                <a href="<?= base_url('/dashboard/orderdetail'); ?>">
-                                    <span class="sub-item">Detail Order</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>                   
-                </li> 
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/orders'); ?>">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Pesanan</p>
+                    </a>
+                 </li>
                  <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/payments'); ?>">
+                        <i class="fas fa-credit-card"></i>
+                        <p>Pembayaran</p>
+                    </a>
+                 </li>
+                <li class="nav-item">
                     <a href="<?= base_url('/dashboard/reports'); ?>">
                         <i class="far fa-chart-bar"></i>
                         <p>Laporan</p>
                     </a>
-                </li>
+                </li>  
                 <li class="nav-item">
                     <a href="<?= base_url('/dashboard/managecontent'); ?>">
                         <i class="fas fa-pen-square"></i>
                         <p>Kelola Konten</p>
                     </a>
                 </li>
+
             </ul>
         </div>
     </div>
