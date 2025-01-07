@@ -12,11 +12,11 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="<?= base_url('/home/user');?>" class="nav-item nav-link">Beranda</a>
-                    <a href="<?= base_url('/shop/user');?>" class="nav-item nav-link">Shop</a>
-                    <a href="<?= base_url('/cart/user');?>" class="nav-item nav-link">Keranjang</a>
-                    <a href="<?= base_url('/testimoni/user');?>" class="nav-item nav-link">Testimoni</a>
-                    <a href="<?= base_url('/about/user');?>" class="nav-item nav-link">About</a>
+                    <a href="<?= base_url('/home');?>" class="nav-item nav-link">Beranda</a>
+                    <a href="<?= base_url('/shop');?>" class="nav-item nav-link">Shop</a>
+                    <a href="<?= base_url('/cart');?>" class="nav-item nav-link">Keranjang</a>
+                    <a href="<?= base_url('/testimoni');?>" class="nav-item nav-link">Testimoni</a>
+                    <a href="<?= base_url('/about');?>" class="nav-item nav-link">About</a>
                 </div>
                 <div class="d-flex m-3 me-0">
                     <a href="<?= base_url('/cart');?>" class="position-relative me-4 my-auto">

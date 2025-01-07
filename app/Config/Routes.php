@@ -22,6 +22,7 @@ use CodeIgniter\Router\RouteCollection;
         
         // Daftar Users Dashboard
         $routes->get('users', 'UserDashboard::index'); 
+        $routes->post('users/addProses', 'UserDashboard::addProses'); 
         $routes->get('users/addProses', 'UserDashboard::addProses'); 
         $routes->post('users/save', 'UserDashboard::saveData'); 
         $routes->get('users/edit/(:num)', 'UserDashboard::edit/$1'); 
@@ -43,6 +44,23 @@ use CodeIgniter\Router\RouteCollection;
         $routes->get('categories/edit/(:num)', 'CategoryDashboard::edit/$1'); 
         $routes->post('categories/update', 'CategoryDashboard::update');
         $routes->delete('categories/delete/(:num)', 'CategoryDashboard::delete/$1');
+        
+        // Daftar Ekspedisi Dashboard
+        $routes->get('ekspedisi', 'EkspedisiDashboard::index'); 
+        $routes->get('ekspedisi/add', 'EkspedisiDashboard::add'); 
+        $routes->post('ekspedisi/saveData', 'EkspedisiDashboard::saveData'); 
+        $routes->get('ekspedisi/edit/(:num)', 'EkspedisiDashboard::edit/$1'); 
+        $routes->post('ekspedisi/update', 'EkspedisiDashboard::update');
+        $routes->delete('ekspedisi/delete/(:num)', 'EkspedisiDashboard::delete/$1');
+
+        // Orders routes
+        $routes->get('orders', 'OrdersDashboard::index');
+        $routes->get('orders/edit/(:num)', 'OrdersDashboard::edit/$1');
+        $routes->post('orders/update', 'OrdersDashboard::update');
+
+        // Payments routes
+        $routes->get('payments', 'PaymentsController::index');
+        $routes->get('payments/view/(:num)', 'PaymentsController::view/$1');
     
         // Section Lain
         $routes->get('orderdetail', 'SectionDashboard::orderdetail');
@@ -55,8 +73,14 @@ use CodeIgniter\Router\RouteCollection;
  $routes->group('', ['filter' => 'role:User'], function ($routes) {
      $routes->get('/home/user', 'Homepages::index');
      $routes->get('/about/user', 'SectionHome::about');
-     $routes->get('/shop/user', 'SectionHome::shop');
-     $routes->get('/cart/user', 'SectionHome::cart');
+    
+     $routes->get('shop', 'ShopController::index');
+     
+
+    $routes->get('cart', 'CartController::index');
+    $routes->get('cart/updateQuantity/(:num)/(:num)', 'CartController::updateQuantity/$1/$2');
+    $routes->get('cart/removeItem/(:num)', 'CartController::removeItem/$1');
+
      $routes->get('/testimoni/user', 'SectionHome::testimoni');
  });
 

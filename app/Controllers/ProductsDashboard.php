@@ -65,7 +65,7 @@ class ProductsDashboard extends BaseController
         if ($image && $image->isValid() && !$image->hasMoved()) {
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('public/uploads/products', $imageName);
+            $image->move('uploads/products', $imageName);
         }
 
         $data = [
@@ -136,13 +136,13 @@ class ProductsDashboard extends BaseController
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
             // Hapus gambar lama jika ada
-            if ($product['gambar_products'] && file_exists('public/uploads/products/' . $product['gambar_products'])) {
-                unlink('public/uploads/products/' . $product['gambar_products']);
+            if ($product['gambar_products'] && file_exists('    uploads/products/' . $product['gambar_products'])) {
+                unlink('uploads/products/' . $product['gambar_products']);
             }
 
             $timestamp = date('YmdHis');
             $imageName = $timestamp . '_' . $image->getRandomName();
-            $image->move('public/uploads/products', $imageName);
+            $image->move('uploads/products', $imageName);
         }
 
         $data = [
@@ -168,8 +168,8 @@ class ProductsDashboard extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Produk tidak ditemukan.']);
         }
 
-        if (!empty($product['gambar_products']) && file_exists('public/uploads/products/' . $product['gambar_products'])) {
-            unlink('public/uploads/products/' . $product['gambar_products']);
+        if (!empty($product['gambar_products']) && file_exists('uploads/products/' . $product['gambar_products'])) {
+            unlink('uploads/products/' . $product['gambar_products']);
         }
 
         $this->product->delete($id);

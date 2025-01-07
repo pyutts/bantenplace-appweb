@@ -33,7 +33,7 @@
                                 <tr>
                                     <td><?= esc($product['kode_products']) ?></td>
                                     <td>
-                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('public/uploads/products/' . $product['gambar_products']) ?>" alt="icon">
+                                        <img class="img-thumbnail" style="width: 100px;" src="<?= base_url('uploads/products/' . $product['gambar_products']) ?>" alt="icon">
                                     </td>
                                     <td><?= esc($product['name_products']) ?></td>
                                     <td>Rp. <?= esc(number_format($product['price'], 0, ',', '.')) ?></td>
@@ -136,7 +136,7 @@ function editProduct(id) {
                 $('#description').val(response.data.description);
                 $('#stock').val(response.data.stock);
                 $('#category_id').val(response.data.category_id);
-                $('#previewGambar').attr('src', '<?= base_url('public/uploads/products') ?>/' + response.data.gambar_products);
+                $('#previewGambar').attr('src', '<?= base_url('uploads/products') ?>/' + response.data.gambar_products);
                 $('#modalEdit').modal('show');
             } else {
                 Swal.fire('Error', response.message, 'error');

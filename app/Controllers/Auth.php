@@ -42,7 +42,6 @@ class Auth extends BaseController
         return view('auth/register');
     }
 
-    
     public function attemptRegister()
     {
         $validation = \Config\Services::validation();
@@ -52,7 +51,7 @@ class Auth extends BaseController
             'Username' => 'required|is_unique[users.username]',
             'Email'    => 'required|valid_email|is_unique[users.email]',
             'Password' => 'required|min_length[6]',
-            'ProfilGambar' => 'uploaded[ProfilGambar]|is_image[ProfilGambar]|mime_in[ProfilGambar,image/jpg,image/jpeg,image/png]|max_size[ProfilGambar,2048]',
+            'ProfilGambar' => 'uploaded[ProfilGambar]|is_image[ProfilGambar]|mime_in[ProfilGambar,image/jpg,image/jpeg,image/png]|max_size[ProfilGambar,512]',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -61,7 +60,7 @@ class Auth extends BaseController
 
         $profilGambar = $this->request->getFile('ProfilGambar');
         $profilGambarName = $profilGambar->getRandomName();
-        $profilGambar->move('public/uploads', $profilGambarName);
+        $profilGambar->move('uploads/users', $profilGambarName);
 
         $userModel = new UsersModel();
         $userModel->save([
@@ -88,7 +87,6 @@ class Auth extends BaseController
             'level'         => $user['level'],
             'profil_gambar' => $user['profil_gambar'],
             'logged_in'     => true,
-            'logged_out'    => true,
         ]);
     }
 

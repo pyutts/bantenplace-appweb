@@ -57,6 +57,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= base_url('/dashboard/ekspedisi'); ?>">
+                        <i class="fas fa-truck"></i>
+                        <p>Ekspedisi</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= base_url('/dashboard/orders'); ?>">
                         <i class="fas fa-shopping-cart"></i>
                         <p>Pesanan</p>

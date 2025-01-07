@@ -24,7 +24,7 @@
           Selamat Datang di Halaman Register 
           <font color="green"><b>Bantenplace</b></font>
         </h5>
-        <form id="formregister" action="/auth/attemptRegister" method="post">
+        <form id="formregister" action="<?= base_url('/auth/attemptRegister'); ?>" method="post" enctype="multipart/form-data">
           <?= csrf_field(); ?>
           <div class="mb-4">
             <label for="Nama" class="block text-gray-700 font-medium mb-2">Nama</label>
@@ -42,79 +42,39 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
           <div class="mb-4">
-            <label for="Alamat" class="block text-gray-700 font-medium mb-2">Alamat</label>
-            <textarea id="Alamat" name="Alamat" placeholder="Masukkan Alamat" rows="2"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
-          </div>
-          <div class="mb-4">
-            <label for="No" class="block text-gray-700 font-medium mb-2">No Telepon</label>
-            <input type="number" id="No" name="No" placeholder="Masukkan No Telepon"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
-          </div>
-          <div class="mb-4">
-            <label for="Pos" class="block text-gray-700 font-medium mb-2">Kode Pos</label>
-            <input type="number" id="Pos" name="Pos" placeholder="Masukkan Kode Pos"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
-          </div>
-          <div class="mb-6">
             <label for="Password" class="block text-gray-700 font-medium mb-2">Password</label>
             <input type="password" id="Password" name="Password" placeholder="Masukkan Password"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
-          <button type="button" onclick="RegisterProses()"
-            class="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition">
-            REGISTER
-          </button>
-          <p class="text-gray-600 text-center mt-4">
-            Sudah memiliki akun?
-            <a href="<?= base_url('/login'); ?>" class="text-black-500 hover:underline font-medium">Login</a>
-          </p>
+          <div class="mb-4">
+            <label for="Alamat" class="block text-gray-700 font-medium mb-2">Alamat</label>
+            <input type="text" id="Alamat" name="Alamat" placeholder="Masukkan Alamat"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="mb-4">
+            <label for="No" class="block text-gray-700 font-medium mb-2">No Telepon</label>
+            <input type="text" id="No" name="No" placeholder="Masukkan No Telepon"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="mb-4">
+            <label for="Pos" class="block text-gray-700 font-medium mb-2">Kode Pos</label>
+            <input type="text" id="Pos" name="Pos" placeholder="Masukkan Kode Pos"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="mb-4">
+            <label for="ProfilGambar" class="block text-gray-700 font-medium mb-2">Profil Gambar</label>
+            <input type="file" id="ProfilGambar" name="ProfilGambar" accept="image/png, image/jpeg"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="flex items-center justify-between">
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+              Register
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </section>
-
-  <script>
-    function RegisterProses() {
-      const Nama = document.getElementById('Nama').value.trim();
-      const Username = document.getElementById('Username').value.trim();
-      const Email = document.getElementById('Email').value.trim();
-      const Alamat = document.getElementById('Alamat').value.trim();
-      const No = document.getElementById('No').value.trim();
-      const Pos = document.getElementById('Pos').value.trim();
-      const Password = document.getElementById('Password').value.trim();
-
-      if (!Nama) {
-        Swal.fire('Error', 'Nama masih kosong', 'error');
-        return false;
-      }
-      if (!Username) {
-        Swal.fire('Error', 'Username masih kosong', 'error');
-        return false;
-      }
-      if (!Email) {
-        Swal.fire('Error', 'Email masih kosong', 'error');
-        return false;
-      }
-      if (!Alamat) {
-        Swal.fire('Error', 'Alamat masih kosong', 'error');
-        return false;
-      }
-      if (!No) {
-        Swal.fire('Error', 'No Telepon masih kosong', 'error');
-        return false;
-      }
-      if (!Pos) {
-        Swal.fire('Error', 'Kode Pos masih kosong', 'error');
-        return false;
-      }
-      if (!Password || Password.length < 6) {
-        Swal.fire('Error', 'Password minimal 6 karakter', 'error');
-        return false;
-      }
-      document.getElementById('formregister').submit();
-    }
-  </script>
 </body>
 
 </html>

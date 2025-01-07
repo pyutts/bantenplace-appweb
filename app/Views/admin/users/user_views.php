@@ -3,6 +3,7 @@
 
 <?= $this->include('admin/users/addUsers'); ?>
 <?= $this->include('admin/users/editUsers'); ?>
+
 <div class="col-md-12 py-5">
     <div class="card">
         <div class="card-header d-flex align-items-center">
@@ -12,43 +13,40 @@
             </button>
         </div>
         <div class="card-body">
-            <!-- Tabel Data -->
             <div class="table-responsive">
-                <table id="usersTable" class="table table-striped table-hover" style="width:100%">
+                <table id="usersTable" class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nama</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Nomor Telepon</th>
+                            <th>No. Telepon</th>
                             <th>Kode Pos</th>
                             <th>Level</th>
+                            <th>Profil</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($users) && is_array($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                                <tr>
-                                    <td><?= esc($user['id']) ?></td>
-                                    <td><?= esc($user['nama']) ?></td>
-                                    <td><?= esc($user['username']) ?></td>
-                                    <td><?= esc($user['email']) ?></td>
-                                    <td><?= esc($user['no_telepon']) ?></td>
-                                    <td><?= esc($user['kode_pos']) ?></td>
-                                    <td><?= esc($user['level']) ?></td>
-                                    <td>
-                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalEdit" onclick="editUser(<?= $user['id'] ?>)">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteUser(<?= $user['id'] ?>)">Delete</button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="8" class="text-center">Tidak ada data user</td>
-                            </tr>
-                        <?php endif; ?>
+                        <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td><?= esc($user['nama']) ?></td>
+                            <td><?= esc($user['username']) ?></td>
+                            <td><?= esc($user['email']) ?></td>
+                            <td><?= esc($user['no_telepon']) ?></td>
+                            <td><?= esc($user['kode_pos']) ?></td>
+                            <td><?= esc($user['level']) ?></td>
+                            <td>
+                                <?php if ($user['profil_gambar']): ?>
+                                    <img src="<?= base_url('uploads/users/' . $user['profil_gambar']) ?>" alt="Profil" class="img-thumbnail" width="50">
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editUser('<?= $user['profil_gambar'] ?>')">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser('<?= $user['profil_gambar'] ?>')">Delete</button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -76,48 +74,6 @@ $(document).ready(function() {
             }
         }
     });
-
-    // Handle form submission for adding user
-    $('#formAdd').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.status === 'success') {
-                    Swal.fire('Success', response.message, 'success').then(() => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire('Error', response.message, 'error');
-                }
-            }
-        });
-    });
-
-    // Handle form submission for editing user
-    $('#formEdit').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.status === 'success') {
-                    Swal.fire('Success', response.message, 'success').then(() => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire('Error', response.message, 'error');
-                }
-            }
-        });
-    });
 });
 
 function editUser(id) {
@@ -127,14 +83,15 @@ function editUser(id) {
         dataType: 'json',
         success: function(response) {
             if (response.status === 'success') {
-                $('#user_id').val(response.data.id);
-                $('#nama').val(response.data.nama);
-                $('#username').val(response.data.username);
-                $('#email').val(response.data.email);
-                $('#no_telepon').val(response.data.no_telepon);
-                $('#kode_pos').val(response.data.kode_pos);
-                $('#level').val(response.data.level);
-                $('#previewProfilGambarEdit').attr('src', '<?= base_url('public/uploads/users') ?>/' + response.data.profil_gambar);
+                $('#profil_gambar').val(response.data.profil_gambar);
+                $('#edit_nama').val(response.data.nama);
+                $('#edit_username').val(response.data.username);
+                $('#edit_email').val(response.data.email);
+                $('#edit_no_telepon').val(response.data.no_telepon);
+                $('#edit_kode_pos').val(response.data.kode_pos);
+                $('#edit_alamat').val(response.data.alamat);
+                $('#edit_level').val(response.data.level);
+                $('#previewGambar').attr('src', '<?= base_url('uploads/users') ?>/' + response.data.gambar_products);
                 $('#modalEdit').modal('show');
             } else {
                 Swal.fire('Error', response.message, 'error');
@@ -143,33 +100,134 @@ function editUser(id) {
     });
 }
 
-function deleteUser(id) {
-    Swal.fire({
-            title: "Konfirmasi Hapus",
-            text: "Apakah Anda yakin ingin menghapus pengguna ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Batal",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '<?= base_url('dashboard/users/delete') ?>/' + id,
-                type: 'DELETE',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
-                        Swal.fire('Deleted!', response.message, 'success').then(() => {
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire('Error', response.message, 'error');
-                    }
+function deleteUser(profil_gambar) {
+    function editUser(profil_gambar) {
+    $.ajax({
+        url: '<?= base_url('dashboard/users/delete') ?>/' + profil_gambar,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#profil_gambar_old').val(response.data.profil_gambar);
+                $('#edit_nama').val(response.data.nama);
+                $('#edit_username').val(response.data.username);
+                $('#edit_email').val(response.data.email);
+                $('#edit_no_telepon').val(response.data.no_telepon);
+                $('#edit_kode_pos').val(response.data.kode_pos);
+                $('#edit_alamat').val(response.data.alamat);
+                $('#edit_level').val(response.data.level);
+                
+                if (response.data.profil_gambar) {
+                    $('#previewProfilGambarEdit')
+                        .attr('src', '<?= base_url('uploads/users') ?>/' + response.data.profil_gambar)
+                        .show();
                 }
+                
+                $('#modalEdit').modal('show');
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan saat mengambil data'
             });
         }
     });
 }
+
+// Handle form submissions with SweetAlert
+$(document).ready(function() {
+    $('#formAdd').on('submit', function(e) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah anda yakin ingin menambah user ini?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, tambahkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $('#formEdit').on('submit', function(e) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah anda yakin ingin mengubah data user ini?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, update!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+});
 </script>
 
 <?= $this->endSection(); ?>
