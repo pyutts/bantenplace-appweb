@@ -8,8 +8,17 @@
                         <h4 class="mb-3 text-secondary">100% Buatan UMKM</h4>
                         <h1 class="mb-5 display-3 text-primary">Tempat Banten dan Upakara Terlengkap</h1>
                         <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" placeholder="Banten Caru Lengkap...">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Carilah</button>
+                            <form action="<?= base_url('shop') ?>" method="GET" class="d-flex">
+                                <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" 
+                                       type="text" 
+                                       name="search" 
+                                       placeholder="Banten Caru Lengkap...">
+                                <button type="submit" 
+                                        class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" 
+                                        style="top: 0; right: 25%;">
+                                    Carilah
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-5">
@@ -111,8 +120,8 @@
                         <div class="py-4">
                             <h1 class="display-3 text-white">Ingin Upakara Terlengkap ?</h1>
                             <p class="fw-normal display-6 text-white mb-4">di Bantenplace saja</p>
-                            <p class="mb-4 text-white">jika kamu ingin melihat produk lebih lanjut, silahkan login terlebih dahulu disini.</p>
-                            <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-white py-3 px-5">LOGIN</a>
+                            <p class="mb-4 text-white">Silahkan Menekan tombol menuju ke halaman shop.</p>
+                            <a href="<?= base_url('/shop');?>" class="banner-btn btn border-2 border-white rounded-pill text-white py-3 px-5">SHOP</a>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -130,45 +139,8 @@
                 </div>
             </div>
         </div>
-        <!-- Banner Section End -->
 
-        <!-- Fact Start -->
-        <div class="container-fluid py-5">
-            <div class="container">
-                <div class="bg-light p-5 rounded">
-                    <div class="row g-4 justify-content-center">
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>Kepuasan Pelanggan</h4>
-                                <h1>1963</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>Kualitas Layanan</h4>
-                                <h1>99%</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-money-bill text-secondary"></i>
-                                <h4>Jenis Pembayaran</h4>
-                                <h1>33</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>Product Tersedia</h4>
-                                <h1>789</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
         
     </div>
 <?= $this->endSection(); ?>

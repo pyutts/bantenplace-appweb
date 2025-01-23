@@ -25,7 +25,7 @@ use CodeIgniter\Router\RouteCollection;
         $routes->post('users/addProses', 'UserDashboard::addProses'); 
         $routes->get('users/addProses', 'UserDashboard::addProses'); 
         $routes->post('users/save', 'UserDashboard::saveData'); 
-        $routes->get('users/edit/(:num)', 'UserDashboard::edit/$1'); 
+        $routes->get('users/edit/(:segment)', 'UserDashboard::edit/$1'); 
         $routes->post('users/update', 'UserDashboard::update');
         $routes->delete('users/delete/(:num)', 'UserDashboard::delete/$1');
         
@@ -55,34 +55,54 @@ use CodeIgniter\Router\RouteCollection;
 
         // Orders routes
         $routes->get('orders', 'OrdersDashboard::index');
-        $routes->get('orders/edit/(:num)', 'OrdersDashboard::edit/$1');
-        $routes->post('orders/update', 'OrdersDashboard::update');
 
         // Payments routes
         $routes->get('payments', 'PaymentsController::index');
-        $routes->get('payments/view/(:num)', 'PaymentsController::view/$1');
+        $routes->get('payments/view/(:segment)', 'PaymentsController::view/$1');
+        $routes->get('payments/report', 'PaymentsController::generateReport');
+
+        // Report routes
+        $routes->get('reports', 'ReportsController::index');
+        $routes->post('reports/generate', 'ReportsController::generate');
+        $routes->get('reports/exportPdf/(:num)/(:num)', 'ReportsController::exportPdf/$1/$2');
     
-        // Section Lain
-        $routes->get('orderdetail', 'SectionDashboard::orderdetail');
-        $routes->get('managecontent', 'SectionDashboard::managecontent');
-        $routes->get('managecart', 'SectionDashboard::managecart');
-        $routes->get('managetransaction', 'SectionDashboard::managetransaction');
-        $routes->get('reports', 'SectionDashboard::reports');
     });
  
- $routes->group('', ['filter' => 'role:User'], function ($routes) {
-     $routes->get('/home/user', 'Homepages::index');
-     $routes->get('/about/user', 'SectionHome::about');
+    $routes->group('', ['filter' => 'role:User'], function ($routes) {
+        // Proses Beranda
+        $routes->get('/homes', 'SectionHome::home');
+        // Proses About
+        $routes->get('/about', 'SectionHome::about');
+        // Proses Shop
+        $routes->get('shop', 'ShopController::index');
+        // Proses Keranjang
+        $routes->group('cart', ['namespace' => 'App\Controllers'], function($routes) {
+            $routes->get('/', 'CartController::index');
+            $routes->post('add', 'CartController::add');
+            $routes->post('update/(:num)', 'CartController::update/$1');
+            $routes->post('remove/(:num)', 'CartController::remove/$1');
+            $routes->post('checkout', 'CartController::checkout');
+        });
+        // Proses Akun
+        $routes->group('myaccounts', function($routes) {
+            $routes->get('/', 'AccountController::myaccounts');
+            $routes->get('edit', 'AccountController::edit');
+            $routes->post('update', 'AccountController::update');
+        });
+        // Proses Checkout
+        $routes->group('checkout', ['filter' => 'auth'], function($routes) {
+            $routes->get('/', 'CheckoutController::index');
+            $routes->get('history', 'CheckoutController::history');
+            $routes->get('tracking/(:num)', 'CheckoutController::tracking/$1');
+            $routes->get('checkStatus/(:num)', 'CheckoutController::checkStatus/$1');
+            $routes->get('invoice/(:num)', 'CheckoutController::invoice/$1');
+            $routes->get('generateInvoicePdf/(:num)', 'CheckoutController::generateInvoicePdf/$1');
+            $routes->get('orders', 'CheckoutController::orderList');
+        });
+      
+    });
+
     
-     $routes->get('shop', 'ShopController::index');
-     
-
-    $routes->get('cart', 'CartController::index');
-    $routes->get('cart/updateQuantity/(:num)/(:num)', 'CartController::updateQuantity/$1/$2');
-    $routes->get('cart/removeItem/(:num)', 'CartController::removeItem/$1');
-
-     $routes->get('/testimoni/user', 'SectionHome::testimoni');
- });
 
  
  

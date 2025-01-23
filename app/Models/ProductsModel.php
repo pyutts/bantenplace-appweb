@@ -8,7 +8,7 @@ class ProductsModel extends Model
 {
     protected $table = 'products';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name_products', 'gambar_products', 'description', 'price', 'stock', 'kode_products', 'category_id', 'created_at', 'updated_at'];
+    protected $allowedFields = ['uid','name_products', 'gambar_products', 'description', 'price', 'stock', 'kode_products', 'category_id', 'created_at', 'updated_at'];
 
     protected $beforeInsert = ['generateKodeUnik'];
 

@@ -1,5 +1,6 @@
 <?= $this->include('homepages/templates/header'); ?>
 
+
 <!-- Navbar Start -->
 <div class="container-fluid fixed-top shadow-sm">
     <div class="container">
@@ -12,10 +13,10 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="<?= base_url('/home');?>" class="nav-item nav-link">Beranda</a>
+                    <a href="<?= base_url('/homes');?>" class="nav-item nav-link">Beranda</a>
                     <a href="<?= base_url('/shop');?>" class="nav-item nav-link">Shop</a>
                     <a href="<?= base_url('/cart');?>" class="nav-item nav-link">Keranjang</a>
-                    <a href="<?= base_url('/testimoni');?>" class="nav-item nav-link">Testimoni</a>
+                    <a href="<?= base_url('/checkout');?>" class="nav-item nav-link">Pesanan</a>
                     <a href="<?= base_url('/about');?>" class="nav-item nav-link">About</a>
                 </div>
                 <div class="d-flex m-3 me-0">
@@ -35,10 +36,10 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item text-black" href="#">Akun Saya</a></li>
-                            <li><a class="dropdown-item text-black" href="#">Atur Pembayaran</a></li>
+                            <li><a class="dropdown-item" style="background-color: #f8f9fa;" href="<?= base_url('/myaccounts');?>">My Akun</a></li>
+                            <li><a class="dropdown-item" style="background-color: #f8f9fa;" href="<?= base_url('/checkout');?>">Pesanan</a></li>
                             <hr>
-                            <li><a class="dropdown-item text-black" href="<?= base_url('/logout');?>"><b>Keluar Akun</b></a></li>
+                            <li><a class="dropdown-item" style="background-color: #f8f9fa;" href="<?= base_url('/logout');?>"><b>Keluar</b></a></li>
                         </ul>
                     </div>
                 </div>

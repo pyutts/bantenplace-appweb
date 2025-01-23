@@ -2,9 +2,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
             <form id="formEdit" action="<?= base_url('dashboard/products/update') ?>" method="post" enctype="multipart/form-data">
-                <div class="modal-header bg-warning text-white">
+                <div class="modal-header text-black">
                     <h5 class="modal-title fw-bold" id="modalEditLabel">Edit Produk</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

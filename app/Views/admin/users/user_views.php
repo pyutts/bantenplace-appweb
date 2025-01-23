@@ -43,7 +43,9 @@
                             </td>
                             <td>
                                 <button class="btn btn-warning btn-sm" onclick="editUser('<?= $user['profil_gambar'] ?>')">Edit</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteUser('<?= $user['profil_gambar'] ?>')">Delete</button>
+                                <button onclick="confirmDelete('<?= $user['id'] ?>')" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -76,34 +78,9 @@ $(document).ready(function() {
     });
 });
 
-function editUser(id) {
+function editUser(profilGambar) {
     $.ajax({
-        url: '<?= base_url('dashboard/users/edit') ?>/' + id,
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === 'success') {
-                $('#profil_gambar').val(response.data.profil_gambar);
-                $('#edit_nama').val(response.data.nama);
-                $('#edit_username').val(response.data.username);
-                $('#edit_email').val(response.data.email);
-                $('#edit_no_telepon').val(response.data.no_telepon);
-                $('#edit_kode_pos').val(response.data.kode_pos);
-                $('#edit_alamat').val(response.data.alamat);
-                $('#edit_level').val(response.data.level);
-                $('#previewGambar').attr('src', '<?= base_url('uploads/users') ?>/' + response.data.gambar_products);
-                $('#modalEdit').modal('show');
-            } else {
-                Swal.fire('Error', response.message, 'error');
-            }
-        }
-    });
-}
-
-function deleteUser(profil_gambar) {
-    function editUser(profil_gambar) {
-    $.ajax({
-        url: '<?= base_url('dashboard/users/delete') ?>/' + profil_gambar,
+        url: '<?= base_url('dashboard/users/edit') ?>/' + profilGambar,
         type: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -115,32 +92,25 @@ function deleteUser(profil_gambar) {
                 $('#edit_no_telepon').val(response.data.no_telepon);
                 $('#edit_kode_pos').val(response.data.kode_pos);
                 $('#edit_alamat').val(response.data.alamat);
-                $('#edit_level').val(response.data.level);
-                
+                $('#edit_level').val(response.data.level); 
+
                 if (response.data.profil_gambar) {
                     $('#previewProfilGambarEdit')
                         .attr('src', '<?= base_url('uploads/users') ?>/' + response.data.profil_gambar)
                         .show();
                 }
-                
+
                 $('#modalEdit').modal('show');
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: response.message
-                });
+                Swal.fire('Error', response.message, 'error');
             }
         },
         error: function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Terjadi kesalahan saat mengambil data'
-            });
+            Swal.fire('Error', 'Terjadi kesalahan saat mengambil data', 'error');
         }
     });
 }
+
 
 // Handle form submissions with SweetAlert
 $(document).ready(function() {
@@ -228,6 +198,52 @@ $(document).ready(function() {
         });
     });
 });
+
+
+function confirmDelete(userId) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data user akan dihapus permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('dashboard/users/delete') ?>/' + userId,
+                type: 'DELETE',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire(
+                            'Terhapus!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Gagal!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan saat menghapus data.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+
+}
 </script>
 
 <?= $this->endSection(); ?>

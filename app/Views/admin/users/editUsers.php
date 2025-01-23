@@ -1,9 +1,9 @@
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header text-black">
                 <h5 class="modal-title fw-bold" id="modalEditLabel">Edit User</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success btn-sm">Update User</button>
+                    <button type="submit" class="btn btn-warning btn-sm">Update User</button>
                 </div>
             </form>
         </div>

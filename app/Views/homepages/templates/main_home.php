@@ -15,7 +15,7 @@
                     <a href="<?= base_url('/login');?>" class="nav-item nav-link">Beranda</a>
                     <a href="<?= base_url('/login');?>" class="nav-item nav-link">Shop</a>
                     <a href="<?= base_url('/login');?>" class="nav-item nav-link">Keranjang</a>
-                    <a href="<?= base_url('/login');?>" class="nav-item nav-link">Testimoni</a>
+                    <a href="<?= base_url('/login');?>" class="nav-item nav-link">Pesanan</a>
                     <a href="<?= base_url('/login');?>" class="nav-item nav-link">About</a>
                 </div>
                 <div class="d-flex m-3 me-0">

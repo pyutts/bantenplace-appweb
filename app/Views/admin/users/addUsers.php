@@ -1,9 +1,9 @@
 <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="modalTambahLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header  text-black">
                 <h5 class="modal-title fw-bold" id="modalTambahLabel">Tambah User</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

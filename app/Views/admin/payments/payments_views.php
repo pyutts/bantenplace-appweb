@@ -13,11 +13,12 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Transaction ID</th>
-                            <th>Payment Method</th>
-                            <th>Payment Status</th>
-                            <th>Amount Paid</th>
-                            <th>Payment Date</th>
+                            <th>Kode Transaksi</th>
+                         
+                            <th>Status Pembayaran</th>
+                            <th>Jumlah Bayar</th>
+                            <th>Tanggal Bayar</th>
+                            <th>Total Harga</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -27,12 +28,13 @@
                                 <tr>
                                     <td><?= esc($payment['order_id']) ?></td>
                                     <td><?= esc($payment['transaction_id']) ?></td>
-                                    <td><?= esc($payment['payment_method']) ?></td>
+                                   
                                     <td><?= esc($payment['payment_status']) ?></td>
                                     <td>Rp. <?= esc(number_format($payment['amount_paid'], 0, ',', '.')) ?></td>
                                     <td><?= esc($payment['payment_date']) ?></td>
+                                    <td>Rp. <?= esc(number_format($payment['total_price'], 0, ',', '.')) ?></td>
                                     <td>
-                                        <a href="<?= base_url('dashboard/payments/view/' . $payment['id']) ?>" class="btn btn-info btn-sm">View</a>
+                                        <a href="<?= base_url('dashboard/payments/view/' . $payment['order_id']) ?>" class="btn btn-info btn-sm">View</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

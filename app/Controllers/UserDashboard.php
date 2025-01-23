@@ -101,7 +101,7 @@ class UserDashboard extends BaseController
             'nama'          => 'required',
             'username'      => 'required|is_unique[users.username,id,' . $user['id'] . ']',
             'email'         => 'required|valid_email|is_unique[users.email,id,' . $user['id'] . ']',
-            'level'         => 'required'
+
         ];
 
         if ($this->request->getFile('profil_gambar')->isValid()) {
@@ -152,20 +152,38 @@ class UserDashboard extends BaseController
         return $this->response->setJSON(['status' => 'success', 'message' => 'User berhasil diperbarui.']);
     }
 
-    public function delete($profil_gambar)
+    public function delete($id)
     {
-        $user = $this->users->where('profil_gambar', $profil_gambar)->first();
+        $user = $this->users->find($id);
 
         if (!$user) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'User tidak ditemukan.']);
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'User tidak ditemukan!'
+            ]);
         }
 
-        if (!empty($user['profil_gambar']) && file_exists('uploads/users/' . $user['profil_gambar'])) {
-            unlink('uploads/users/' . $user['profil_gambar']);
+        try {
+            // Hapus file gambar profil jika ada
+            if (!empty($user['profil_gambar'])) {
+                $filePath = 'uploads/users/' . $user['profil_gambar'];
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+
+            // Hapus data user
+            $this->users->delete($id);
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'User berhasil dihapus!'
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Gagal menghapus user. Silakan coba lagi!'
+            ]);
         }
-
-        $this->users->delete($user['id']);
-
-        return $this->response->setJSON(['status' => 'success', 'message' => 'User berhasil dihapus.']);
     }
 }

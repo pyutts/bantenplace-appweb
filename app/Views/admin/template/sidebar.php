@@ -68,25 +68,12 @@
                         <p>Pesanan</p>
                     </a>
                  </li>
-                 <li class="nav-item">
-                    <a href="<?= base_url('/dashboard/payments'); ?>">
-                        <i class="fas fa-credit-card"></i>
-                        <p>Pembayaran</p>
-                    </a>
-                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('/dashboard/reports'); ?>">
                         <i class="far fa-chart-bar"></i>
                         <p>Laporan</p>
                     </a>
                 </li>  
-                <li class="nav-item">
-                    <a href="<?= base_url('/dashboard/managecontent'); ?>">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Kelola Konten</p>
-                    </a>
-                </li>
-
             </ul>
         </div>
     </div>

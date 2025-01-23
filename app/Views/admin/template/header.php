@@ -62,16 +62,17 @@
 							<!-- Gambar Profil -->
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 							<div class="avatar-sm">
-								<?php
-									$userImage = session()->get('profil_gambar');
-									$filePath = FCPATH . 'public/uploads/' . $userImage;
+							<?php
+								$userImage = session()->get ('profil_gambar');
 
-									if ($userImage && file_exists($filePath)) {
-										$imageSrc = base_url('public/uploads/' . $userImage);
-									} else {
-										$imageSrc = base_url('public/uploads/default/default_user.png');
-									}
-								?>					
+								$filePath = FCPATH . $userImage;
+
+								if ($userImage && file_exists($filePath)) {
+									$imageSrc = base_url($userImage);
+								} else {
+									$imageSrc = base_url('/uploads/default/default_user.png');
+								}
+							?>			
 								<img src="<?= esc($imageSrc) ?>" class="avatar-img rounded-circle">
 							</div>
 							</a>

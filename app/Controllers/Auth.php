@@ -96,7 +96,7 @@ class Auth extends BaseController
             case 'Admin':
                 return redirect()->to('/dashboard');
             case 'User':
-                return redirect()->to('/home/user');
+                return redirect()->to('/homes');
             default:
                 return redirect()->to('/login')->with('error', 'Level pengguna tidak dikenali.');
         }

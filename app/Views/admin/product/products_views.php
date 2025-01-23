@@ -79,7 +79,6 @@ $(document).ready(function() {
         }
     });
 
-    // Handle form submission for adding product
     $('#formAdd').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
@@ -100,7 +99,6 @@ $(document).ready(function() {
         });
     });
 
-    // Handle form submission for editing product
     $('#formEdit').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
@@ -147,13 +145,14 @@ function editProduct(id) {
 
 function deleteProduct(id) {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Apakah anda yakin?',
+        text: "Data yang dihapus tidak dapat dikembalikan!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({

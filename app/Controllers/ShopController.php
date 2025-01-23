@@ -2,56 +2,75 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\ProductsModel;
 use App\Models\CategoryModel;
 
 class ShopController extends BaseController
 {
-    protected $productsModel;
+    protected $productModel;
     protected $categoryModel;
 
     public function __construct()
     {
-        $this->productsModel = new ProductsModel();
+        $this->productModel = new ProductsModel();
         $this->categoryModel = new CategoryModel();
     }
 
     public function index()
     {
-        $hash = $this->request->getGet('hash');
-        parse_str($hash, $params);
+        $search = $this->request->getGet('search');
+        $categoryId = $this->request->getGet('category');
+        $sortOrder = $this->request->getGet('sort') ?? 'asc';
+        $perPage = 12;
 
-        $categoryId = $params['category'] ?? null;
-        $searchTerm = $params['xptdk'] ?? null;
-        $sortOrder = $this->request->getGet('sort_order') ?? 'asc';
-        
-        $perPage = 9;
-
-        $products = $this->productsModel->select('products.*, categories.name as category_name')
-                                        ->join('categories', 'categories.id = products.category_id', 'left');
+        $productQuery = $this->productModel;
         
         if ($categoryId) {
-            $products->where('category_id', $categoryId);
-        }
-
-        if ($searchTerm) {
-            $products->like('products.name_products', $searchTerm)
-                     ->orLike('products.description', $searchTerm);
+            $productQuery->where('category_id', $categoryId);
         }
         
-        $products = $products->orderBy('price', $sortOrder)
-                            ->paginate($perPage);
+        // Search products
+        if ($search) {
+            $search = trim($search);
+            $productQuery->groupStart()
+                        ->like('name_products', $search)
+                        ->orLike('description', $search)
+                        ->groupEnd();
+        }
 
-        $categories = $this->categoryModel->findAll();
+        // Filter dan sort lainnya tetap sama
+        if ($categoryId) {
+            $productQuery->where('category_id', $categoryId);
+        }
 
-        return view('homepages/shop', [
-            'products' => $products,
-            'categories' => $categories,
-            'pager' => $this->productsModel->pager,
-            'sortOrder' => $sortOrder,
-            'searchTerm' => $searchTerm,
-            'categoryId' => $categoryId
+        if ($sortOrder == 'asc') {
+            $productQuery->orderBy('price', 'ASC');
+        } else if ($sortOrder == 'desc') {
+            $productQuery->orderBy('price', 'DESC');
+        }
+
+        $data = [
+            'products' => $productQuery->paginate($perPage),
+            'pager' => $productQuery->pager,
+            'categories' => $this->categoryModel->findAll(),
+            'currentCategory' => $categoryId,
+            'currentSort' => $sortOrder,
+            'searchTerm' => $search
+        ];
+
+        return view('homepages/shop', $data);
+    }
+
+    public function detail($id)
+    {
+        $product = $this->productModel->find($id);
+        
+        if (!$product) {
+            return redirect()->to('/shop')->with('error', 'Produk tidak ditemukan');
+        }
+
+        return view('homepages/product_detail', [
+            'product' => $product
         ]);
     }
 }
